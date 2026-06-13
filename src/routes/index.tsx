@@ -394,46 +394,126 @@ const categories = [
   { name: "Party Wear", subtitle: "Indo-western, Cocktail dresses, Gowns & more", img: catParty, key: "Party" },
 ];
 
-function Categories({ onOrder }: { onOrder: (cat?: string) => void }) {
+function TiltCategoryCard({ c, i, onOpen }: { c: typeof categories[number]; i: number; onOpen: (cat: string, x: number, y: number, img: string) => void }) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [t, setT] = useState({ rx: 0, ry: 0, mx: 50, my: 50, lift: 0 });
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    setT({ rx: (0.5 - py) * 12, ry: (px - 0.5) * 14, mx: px * 100, my: py * 100, lift: 1 });
+  };
+  const reset = () => setT((s) => ({ ...s, rx: 0, ry: 0, lift: 0 }));
+  return (
+    <Reveal delay={i * 80}>
+      <div style={{ perspective: "1200px" }}>
+        <button
+          ref={ref}
+          onMouseMove={handleMove}
+          onMouseLeave={reset}
+          onClick={(e) => { addRipple(e); onOpen(c.key, e.clientX, e.clientY, c.img); }}
+          style={{
+            transform: `rotateX(${t.rx}deg) rotateY(${t.ry}deg) translateZ(${t.lift * 18}px)`,
+            transition: "transform 0.25s cubic-bezier(0.22,1,0.36,1)",
+            transformStyle: "preserve-3d",
+          }}
+          className={`ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-xl shadow-black/20 will-change-transform hover:shadow-2xl hover:shadow-burgundy/30 ${c.shimmer ? "shimmer-overlay" : ""}`}
+        >
+          <img src={c.img} alt={c.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-colors group-hover:from-burgundy/85 group-hover:via-burgundy/30" />
+          {/* gold sheen following cursor */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{ background: `radial-gradient(420px circle at ${t.mx}% ${t.my}%, rgba(201,168,76,0.35), transparent 60%)` }}
+          />
+          <span className="absolute right-4 top-4 rounded-full bg-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-charcoal opacity-0 transition-all duration-300 group-hover:opacity-100" style={{ transform: "translateZ(40px)" }}>
+            Custom Made
+          </span>
+          <div className="absolute inset-x-0 bottom-0 p-8" style={{ transform: "translateZ(30px)" }}>
+            <h3 className="font-display text-3xl font-bold text-ivory drop-shadow-lg sm:text-4xl">{c.name}</h3>
+            <p className="mt-2 text-sm text-ivory/85">{c.subtitle}</p>
+            <span className="mt-5 inline-flex translate-y-2 items-center gap-2 rounded-full bg-gold px-5 py-2 text-xs font-semibold uppercase tracking-wider text-charcoal opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              Step Inside <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </button>
+      </div>
+    </Reveal>
+  );
+}
+
+function Categories({ onOrderPortal }: { onOrderPortal: (cat: string, x: number, y: number, img: string) => void }) {
   return (
     <section id="categories" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionHeading eyebrow="Collections" title="Shop by Category" subtitle="Every piece crafted with precision, just for you." />
+          <SectionHeading eyebrow="Collections" title="Shop by Category" subtitle="Click any card — step into its atelier." />
         </Reveal>
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           {categories.map((c, i) => (
-            <Reveal key={c.name} delay={i * 80}>
-              <motion.button
-                onClick={(e) => { addRipple(e); onOrder(c.key); }}
-                whileHover={{ y: -4 }}
-                className={`ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-lg shadow-black/10 transition-shadow hover:shadow-2xl hover:shadow-burgundy/20 ${c.shimmer ? "shimmer-overlay" : ""}`}
-              >
-                <motion.img src={c.img} alt={c.name} className="absolute inset-0 h-full w-full object-cover"
-                  whileHover={{ scale: 1.08 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-colors group-hover:bg-burgundy/30" />
-                <motion.span
-                  initial={{ y: 30, opacity: 0 }} whileHover={{ y: 0, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  className="absolute right-4 top-4 rounded-full bg-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-charcoal opacity-0 group-hover:opacity-100"
-                >
-                  Custom Made
-                </motion.span>
-                <div className="absolute inset-x-0 bottom-0 p-8">
-                  <h3 className="font-display text-3xl font-bold text-ivory sm:text-4xl">{c.name}</h3>
-                  <p className="mt-2 text-sm text-ivory/80">{c.subtitle}</p>
-                  <span className="mt-5 inline-flex translate-y-2 items-center gap-2 rounded-full bg-gold px-5 py-2 text-xs font-semibold uppercase tracking-wider text-charcoal opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    Customise Now <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </motion.button>
-            </Reveal>
+            <TiltCategoryCard key={c.name} c={c} i={i} onOpen={onOrderPortal} />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
+/* ============ Portal reveal ============ */
+
+type Portal = { cat: string; x: number; y: number; img: string };
+
+function CategoryPortal({ portal, onDone }: { portal: Portal; onDone: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 1400);
+    return () => clearTimeout(t);
+  }, [onDone]);
+  return (
+    <div className="fixed inset-0 z-[80] overflow-hidden" style={{ pointerEvents: "none" }}>
+      <div
+        className="absolute inset-0"
+        style={{
+          clipPath: `circle(0px at ${portal.x}px ${portal.y}px)`,
+          animation: "portal-expand 1.2s cubic-bezier(0.7,0,0.2,1) forwards",
+          backgroundColor: "#2a0a18",
+        }}
+      >
+        <img src={portal.img} alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-burgundy-deep/85 via-burgundy/70 to-black/90" />
+        {/* gold thread */}
+        <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <path d="M 0 80 Q 30 20, 60 60 T 100 30" fill="none" stroke="#C9A84C" strokeWidth="0.3"
+            strokeDasharray="200" strokeDashoffset="200"
+            style={{ animation: "thread-draw 1.1s 0.3s ease-out forwards" }} />
+        </svg>
+        {/* measurement tape */}
+        <div className="absolute left-0 right-0 top-1/2 h-10 -translate-y-1/2 overflow-hidden"
+             style={{ animation: "tape-slide 0.9s 0.35s cubic-bezier(0.22,1,0.36,1) both" }}>
+          <div className="h-full w-full bg-gold/95 shadow-2xl shadow-gold/40"
+               style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent 0 22px, rgba(0,0,0,0.55) 22px 23px, transparent 23px 46px, rgba(0,0,0,0.35) 46px 47px)" }} />
+        </div>
+        {/* tilted welcome panel */}
+        <div className="absolute inset-0 flex items-center justify-center" style={{ perspective: "1400px" }}>
+          <div
+            className="rounded-2xl border border-gold/40 bg-burgundy-deep/85 px-10 py-8 text-center shadow-2xl backdrop-blur-md"
+            style={{
+              transform: "rotateX(8deg) rotateY(-10deg)",
+              animation: "panel-fly 0.8s 0.45s cubic-bezier(0.22,1,0.36,1) both",
+            }}
+          >
+            <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-gold">Atelier · {portal.cat}</p>
+            <h3 className="mt-3 font-display text-4xl text-ivory">Welcome inside.</h3>
+            <p className="mt-2 text-sm text-ivory/75">Preparing your measurement studio…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 /* ============ Stats ============ */
 
