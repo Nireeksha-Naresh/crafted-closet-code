@@ -1292,9 +1292,13 @@ function WhatsAppButton() {
 function Home() {
   const [orderOpen, setOrderOpen] = useState(false);
   const [presetCategory, setPresetCategory] = useState<string | undefined>();
+  const [portal, setPortal] = useState<Portal | null>(null);
   const festival = useFestival();
 
   const openOrder = (cat?: string) => { setPresetCategory(cat); setOrderOpen(true); };
+  const openPortal = (cat: string, x: number, y: number, img: string) => {
+    setPortal({ cat, x, y, img });
+  };
 
   return (
     <div className="min-h-screen bg-ivory">
@@ -1308,7 +1312,7 @@ function Home() {
       <main className={festival ? "pt-8" : ""}>
         <Hero />
         <Stats />
-        <Categories onOrder={openOrder} />
+        <Categories onOrderPortal={openPortal} />
         <HowItWorks />
         <WhyUs />
         <Lookbook onOrder={openOrder} />
@@ -1319,6 +1323,12 @@ function Home() {
       <Footer />
       <WhatsAppButton />
       <OrderModal open={orderOpen} onClose={() => setOrderOpen(false)} defaultCategory={presetCategory} />
+      {portal && (
+        <CategoryPortal
+          portal={portal}
+          onDone={() => { const cat = portal.cat; setPortal(null); openOrder(cat); }}
+        />
+      )}
     </div>
   );
 }
