@@ -27,10 +27,10 @@ const catKids = catKidsAsset.url;
 const catBridal = catBridalAsset.url;
 const catEthnic = catEthnicAsset.url;
 const catParty = catPartyAsset.url;
-export const bgArch = bgArchAsset.url;
-export const bgRack = bgRackAsset.url;
-export const bgMughal = bgMughalAsset.url;
-export const bgDrape = bgDrapeAsset.url;
+const bgArch = bgArchAsset.url;
+const bgRack = bgRackAsset.url;
+const bgMughal = bgMughalAsset.url;
+const bgDrape = bgDrapeAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
