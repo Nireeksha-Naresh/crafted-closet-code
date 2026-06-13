@@ -330,7 +330,8 @@ function Hero() {
       }}
       className="relative isolate min-h-screen overflow-hidden"
     >
-      <img src={heroImg} alt="Luxurious burgundy fabric" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={bgDrape} alt="Burgundy and gold embroidered drape" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={bgMughal} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover mix-blend-overlay opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-b from-burgundy-deep/70 via-burgundy/55 to-black/80" />
       <motion.div
         aria-hidden className="pointer-events-none absolute inset-0"
