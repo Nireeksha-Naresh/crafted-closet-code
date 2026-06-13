@@ -8,13 +8,29 @@ import {
   MessageCircle, Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
   Lock, ImageIcon,
 } from "lucide-react";
-import heroImg from "@/assets/hero.jpg";
-import catMen from "@/assets/cat-men.jpg";
-import catWomen from "@/assets/cat-women.jpg";
-import catKids from "@/assets/cat-kids.jpg";
-import catBridal from "@/assets/cat-bridal.jpg";
-import catEthnic from "@/assets/cat-ethnic.jpg";
-import catParty from "@/assets/cat-party.jpg";
+import heroImgAsset from "@/assets/hero.jpg";
+import catMenAsset from "@/assets/cat-men.png.asset.json";
+import catWomenAsset from "@/assets/cat-women.png.asset.json";
+import catKidsAsset from "@/assets/cat-kids.png.asset.json";
+import catBridalAsset from "@/assets/cat-bridal.png.asset.json";
+import catEthnicAsset from "@/assets/cat-ethnic.png.asset.json";
+import catPartyAsset from "@/assets/cat-party.png.asset.json";
+import bgArchAsset from "@/assets/bg-arch.png.asset.json";
+import bgRackAsset from "@/assets/bg-rack.png.asset.json";
+import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
+import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
+
+const heroImg = heroImgAsset;
+const catMen = catMenAsset.url;
+const catWomen = catWomenAsset.url;
+const catKids = catKidsAsset.url;
+const catBridal = catBridalAsset.url;
+const catEthnic = catEthnicAsset.url;
+const catParty = catPartyAsset.url;
+export const bgArch = bgArchAsset.url;
+export const bgRack = bgRackAsset.url;
+export const bgMughal = bgMughalAsset.url;
+export const bgDrape = bgDrapeAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
