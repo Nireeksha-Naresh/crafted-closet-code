@@ -19,6 +19,11 @@ import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
+import bannerZardozi from "@/assets/banner-zardozi-garden.jpg";
+import bannerTunnel from "@/assets/banner-embroidery-tunnel.jpg";
+import bannerJewel from "@/assets/banner-jewel-box.jpg";
+import bannerCourtyard from "@/assets/banner-moonlit-courtyard.jpg";
+import bannerGalaxy from "@/assets/banner-embroidery-galaxy.jpg";
 
 const heroImg = heroImgAsset;
 const catMen = catMenAsset.url;
