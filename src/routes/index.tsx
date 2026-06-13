@@ -19,6 +19,11 @@ import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
+import bannerZardozi from "@/assets/banner-zardozi-garden.jpg";
+import bannerTunnel from "@/assets/banner-embroidery-tunnel.jpg";
+import bannerJewel from "@/assets/banner-jewel-box.jpg";
+import bannerCourtyard from "@/assets/banner-moonlit-courtyard.jpg";
+import bannerGalaxy from "@/assets/banner-embroidery-galaxy.jpg";
 
 const heroImg = heroImgAsset;
 const catMen = catMenAsset.url;
@@ -313,67 +318,166 @@ function Typewriter({ text, className }: { text: string; className?: string }) {
   );
 }
 
+const bridalBanners = [
+  {
+    img: bannerZardozi,
+    eyebrow: "The Wedding Edit",
+    headline: "Threads of Royalty",
+    sub: "Hand-stitched zardozi, dabka & nakshi — couture made for your moment.",
+    alt: "Floating zardozi flowers on maroon silk",
+  },
+  {
+    img: bannerTunnel,
+    eyebrow: "Heritage Atelier",
+    headline: "Heritage in Every Stitch",
+    sub: "An embroidered runway of paisley, pearls & gold thread architecture.",
+    alt: "Royal embroidered tunnel with pearl tassels",
+  },
+  {
+    img: bannerJewel,
+    eyebrow: "Maharani Collection",
+    headline: "Crafted for Celebrations",
+    sub: "Open the jewel box — Mughal motifs reimagined for the modern bride.",
+    alt: "Open velvet jewelry chest with gold embroidery",
+  },
+  {
+    img: bannerCourtyard,
+    eyebrow: "Moonlit Couture",
+    headline: "A Courtyard of Drapes",
+    sub: "Lantern-lit silks and chandeliers of floral thread work.",
+    alt: "Moonlit royal courtyard with embroidered chandeliers",
+  },
+  {
+    img: bannerGalaxy,
+    eyebrow: "Avant-Garde Bridal",
+    headline: "An Embroidered Galaxy",
+    sub: "Where zardozi constellations meet velvet cosmos. Couture, redefined.",
+    alt: "Embroidered galaxy of gold thread and stars",
+  },
+];
+
+function Pearls() {
+  const items = useMemo(() =>
+    Array.from({ length: 14 }).map((_, i) => ({
+      left: Math.random() * 100,
+      size: 3 + Math.random() * 5,
+      duration: 14 + Math.random() * 12,
+      delay: Math.random() * 10,
+      key: i,
+    })), []);
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {items.map((p) => (
+        <span key={p.key} className="pearl-float" style={{
+          left: `${p.left}%`, bottom: "-10px", width: p.size, height: p.size,
+          animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s`,
+        }} />
+      ))}
+    </div>
+  );
+}
+
 function Hero() {
-  const [pos, setPos] = useState({ x: 50, y: 50 });
+  const [idx, setIdx] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const sh = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", sh, { passive: true });
     return () => window.removeEventListener("scroll", sh);
   }, []);
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % bridalBanners.length), 7000);
+    return () => clearInterval(t);
+  }, []);
+  const b = bridalBanners[idx];
   return (
-    <section
-      id="top"
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
-      }}
-      className="relative isolate min-h-screen overflow-hidden"
-    >
-      <img src={bgDrape} alt="Burgundy and gold embroidered drape" className="absolute inset-0 h-full w-full object-cover" />
-      <img src={bgMughal} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover mix-blend-overlay opacity-40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-burgundy-deep/70 via-burgundy/55 to-black/80" />
-      <motion.div
-        aria-hidden className="pointer-events-none absolute inset-0"
-        animate={{ background: `radial-gradient(400px circle at ${pos.x}% ${pos.y}%, rgba(201,168,76,0.25), transparent 70%)` }}
-        transition={{ type: "spring", damping: 30, stiffness: 200 }}
-      />
-      <Particles />
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-24 text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-          className="mb-6 inline-block rounded-full border border-gold/60 bg-black/20 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-gold backdrop-blur"
+    <section id="top" className="relative isolate min-h-screen overflow-hidden bg-black">
+      {/* Banner carousel */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0"
         >
-          <Typewriter text="Crafted for You. Made to Last." />
-        </motion.span>
-        <h1 className="text-5xl font-bold leading-[1.05] text-ivory sm:text-6xl md:text-7xl lg:text-8xl"
-            style={{ transform: `translateY(${scrollY * -0.4}px)` }}>
-          {"Your Style.".split("").map((c, i) => (
-            <motion.span key={i} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.04, type: "spring", stiffness: 200 }} className="inline-block">
-              {c === " " ? "\u00A0" : c}
-            </motion.span>
-          ))}
-          <br />
-          <span className="italic text-gold">Your Fit.</span> Your Story.
-        </h1>
-        <p className="mt-8 max-w-2xl text-base leading-relaxed text-ivory/85 sm:text-lg"
-           style={{ transform: `translateY(${scrollY * -0.6}px)` }}>
-          Premium made-to-order clothing crafted to your exact measurements and taste.
-          From everyday elegance to once-in-a-lifetime occasions.
-        </p>
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <img
+            src={b.img}
+            alt={b.alt}
+            className="banner-kenburns absolute inset-0 h-full w-full object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Vignette + warm glow */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/80" />
+      <div className="pointer-events-none absolute inset-0 spotlight-sweep" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
+
+      <Pearls />
+
+      {/* Ornamental gold corners */}
+      <svg aria-hidden className="pointer-events-none absolute left-6 top-24 h-16 w-16 text-gold/70" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1">
+        <path d="M2 30 Q2 2 30 2" /><path d="M10 30 Q10 10 30 10" /><circle cx="30" cy="30" r="2" fill="currentColor" />
+      </svg>
+      <svg aria-hidden className="pointer-events-none absolute right-6 top-24 h-16 w-16 -scale-x-100 text-gold/70" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1">
+        <path d="M2 30 Q2 2 30 2" /><path d="M10 30 Q10 10 30 10" /><circle cx="30" cy="30" r="2" fill="currentColor" />
+      </svg>
+
+      {/* Copy */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-24 text-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transform: `translateY(${scrollY * -0.35}px)` }}
+          >
+            <span className="font-royal mb-8 inline-block text-[11px] uppercase text-gold/90">
+              <span className="thread-stitch">{b.eyebrow}</span>
+            </span>
+            <h1 className="font-couture mt-4 text-6xl italic leading-[1.02] text-ivory sm:text-7xl md:text-[7.5rem]">
+              <span className="gold-foil">{b.headline}</span>
+            </h1>
+            <p className="font-couture mx-auto mt-8 max-w-xl text-lg leading-relaxed text-ivory/85 sm:text-xl">
+              {b.sub}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="mt-12 flex flex-col gap-4 sm:flex-row">
           <a href="#categories" onClick={(e) => { e.preventDefault(); document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" }); }}
              onMouseDown={addRipple as any}
-             className="ripple-container btn-morph bg-burgundy px-8 py-3.5 text-sm font-semibold text-ivory shadow-lg shadow-black/30">
-            Explore Categories
+             className="ripple-container btn-morph font-royal bg-gold/95 px-10 py-4 text-[11px] uppercase text-burgundy-deep shadow-xl shadow-black/40">
+            Explore the Edit
           </a>
           <a href="#how" onClick={(e) => { e.preventDefault(); document.getElementById("how")?.scrollIntoView({ behavior: "smooth" }); }}
              onMouseDown={addRipple as any}
-             className="ripple-container btn-morph border-2 border-gold bg-transparent px-8 py-3.5 text-sm font-semibold text-gold hover:bg-gold hover:text-charcoal">
-            How It Works
+             className="ripple-container btn-morph font-royal border border-gold/70 bg-transparent px-10 py-4 text-[11px] uppercase text-gold hover:bg-gold/10">
+            Book a Consultation
           </a>
         </div>
+
+        {/* Banner indicators */}
+        <div className="absolute bottom-24 left-1/2 flex -translate-x-1/2 gap-3">
+          {bridalBanners.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Show banner ${i + 1}`}
+              onClick={() => setIdx(i)}
+              className="group relative h-[2px] w-10 overflow-hidden bg-ivory/25"
+            >
+              <span
+                className="absolute inset-y-0 left-0 bg-gold transition-all duration-700"
+                style={{ width: i === idx ? "100%" : "0%" }}
+              />
+            </button>
+          ))}
+        </div>
+
         <button aria-label="Scroll down" onClick={() => document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" })}
                 className="animate-bounce-down absolute bottom-8 left-1/2 -translate-x-1/2 text-gold">
           <ChevronDown className="h-8 w-8" />

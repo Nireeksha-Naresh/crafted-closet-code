@@ -241,3 +241,63 @@
   from { opacity: 0; transform: rotateX(20deg) rotateY(-20deg) translateZ(-200px) scale(0.7); }
   to   { opacity: 1; transform: rotateX(8deg) rotateY(-10deg) translateZ(0) scale(1); }
 }
+
+/* === Luxury bridal banner === */
+.font-couture { font-family: "Cormorant Garamond", "Playfair Display", serif; font-weight: 300; letter-spacing: 0.01em; }
+.font-royal   { font-family: "Cinzel", "Cormorant Garamond", serif; letter-spacing: 0.18em; }
+
+.gold-foil {
+  background: linear-gradient(100deg, #8a6a1f 0%, #C9A84C 20%, #F8E7A8 38%, #fffbe6 50%, #F8E7A8 62%, #C9A84C 80%, #8a6a1f 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gold-foil-shine 9s ease-in-out infinite;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+@keyframes gold-foil-shine {
+  0%, 100% { background-position: 200% 50%; }
+  50%      { background-position: 0% 50%; }
+}
+
+.banner-kenburns { animation: kenburns 18s ease-in-out infinite alternate; }
+@keyframes kenburns {
+  from { transform: scale(1.04) translate3d(-1%, -1%, 0); }
+  to   { transform: scale(1.14) translate3d(1.5%, 1.5%, 0); }
+}
+
+.thread-stitch {
+  position: relative; display: inline-block;
+}
+.thread-stitch::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 1px;
+  background-image: linear-gradient(90deg, transparent 0, transparent 4px, #C9A84C 4px, #C9A84C 12px);
+  background-size: 16px 1px;
+  transform: scaleX(0); transform-origin: left center;
+  animation: stitch-in 1.4s cubic-bezier(0.22,1,0.36,1) 0.4s forwards;
+}
+@keyframes stitch-in { to { transform: scaleX(1); } }
+
+.pearl-float {
+  position: absolute; border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #fff, #f6e6c0 40%, #c9a84c 100%);
+  box-shadow: 0 0 12px rgba(248, 231, 168, 0.6);
+  animation: pearl-drift linear infinite;
+  opacity: 0.85;
+}
+@keyframes pearl-drift {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 0.9; }
+  90%  { opacity: 0.9; }
+  100% { transform: translateY(-120vh) translateX(40px); opacity: 0; }
+}
+
+.spotlight-sweep {
+  background: linear-gradient(115deg, transparent 35%, rgba(255,250,220,0.18) 50%, transparent 65%);
+  background-size: 300% 100%;
+  animation: spotlight-sweep 7s ease-in-out infinite;
+}
+@keyframes spotlight-sweep {
+  0%, 100% { background-position: 200% 0; }
+  50%      { background-position: 0% 0; }
+}
