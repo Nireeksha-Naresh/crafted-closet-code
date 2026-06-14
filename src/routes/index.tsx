@@ -557,7 +557,6 @@ function Categories({ onOrderPortal }: { onOrderPortal: (cat: string, x: number,
           <SectionHeading eyebrow="Collections" title="Shop by Category" subtitle="Click any card — step into its atelier." />
         </Reveal>
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 md:[&>*:last-child]:col-span-2 md:[&>*:last-child]:mx-auto md:[&>*:last-child]:max-w-[calc(50%-0.75rem)] lg:grid-cols-3 lg:[&>*:last-child]:col-span-1 lg:[&>*:last-child]:max-w-none lg:[&>*:last-child]:mx-0">
-{/* The last child is centered when only 3 cards on tablet */}
           {categories.map((c, i) => (
             <TiltCategoryCard key={c.name} c={c} i={i} onOpen={onOrderPortal} />
           ))}
