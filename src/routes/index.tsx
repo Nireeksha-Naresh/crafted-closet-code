@@ -722,7 +722,7 @@ const features = [
   { icon: Zap, title: "Quick Turnaround", desc: "Most orders ready within 7–10 business days." },
   { icon: PenTool, title: "Design Consultation", desc: "Our experts help you pick the perfect design." },
   { icon: RefreshCw, title: "Alterations Included", desc: "Free alterations if the fit isn't perfect." },
-  { icon: Package, title: "Pan-India Delivery", desc: "Fast, secure shipping to your doorstep." },
+  { icon: MapPin, title: "Operating in Bengaluru", desc: "Based in the heart of Bengaluru, serving customers across the city with doorstep pickup and delivery." },
 ];
 
 function WhyUs() {
