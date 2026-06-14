@@ -29,6 +29,8 @@ import bannerTunnel from "@/assets/banner-embroidery-tunnel.jpg";
 import bannerJewel from "@/assets/banner-jewel-box.jpg";
 import bannerCourtyard from "@/assets/banner-moonlit-courtyard.jpg";
 import bannerGalaxy from "@/assets/banner-embroidery-galaxy.jpg";
+import bannerShowroomAsset from "@/assets/hero-vastras-showroom.png.asset.json";
+const bannerShowroom = bannerShowroomAsset.url;
 
 const heroImg = heroImgAsset;
 const catMen = catMenAsset.url;
