@@ -326,6 +326,13 @@ function Typewriter({ text, className }: { text: string; className?: string }) {
 
 const bridalBanners = [
   {
+    img: bannerShowroom,
+    eyebrow: "House of Vastras",
+    headline: "Crafting Memories, Stitching Happiness",
+    sub: "A bespoke atelier of bridal couture, sherwanis & heirloom embroidery — made for your moment.",
+    alt: "House of Vastras atelier showroom with bridal lehenga and sherwani",
+  },
+  {
     img: bannerZardozi,
     eyebrow: "The Wedding Edit",
     headline: "Threads of Royalty",
