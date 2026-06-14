@@ -523,7 +523,7 @@ function TiltCategoryCard({ c, i, onOpen }: { c: typeof categories[number]; i: n
             transition: "transform 0.25s cubic-bezier(0.22,1,0.36,1)",
             transformStyle: "preserve-3d",
           }}
-          className={`ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-xl shadow-black/20 will-change-transform hover:shadow-2xl hover:shadow-burgundy/30 ${c.shimmer ? "shimmer-overlay" : ""}`}
+          className="ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-xl shadow-black/20 will-change-transform hover:shadow-2xl hover:shadow-burgundy/30"
         >
           <img src={c.img} alt={c.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-colors group-hover:from-burgundy/85 group-hover:via-burgundy/30" />
