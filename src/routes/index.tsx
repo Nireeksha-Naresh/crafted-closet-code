@@ -1342,7 +1342,7 @@ function Home() {
         <HowItWorks />
         <WhyUs />
         <Lookbook onOrder={openOrder} />
-        <Estimator />
+        
         <Testimonials />
         <Contact />
       </main>
