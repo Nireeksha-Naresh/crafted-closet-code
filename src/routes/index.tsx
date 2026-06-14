@@ -2,12 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import emailjs from "@emailjs/browser";
 import {
   Menu, X, ChevronDown, Scissors, Target, Sparkles, Zap, PenTool,
   RefreshCw, Package, MapPin, Phone, Mail, Clock, Instagram, Facebook,
   MessageCircle, Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
   Lock, ImageIcon,
 } from "lucide-react";
+
+const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 import heroImgAsset from "@/assets/hero.jpg";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
