@@ -2,12 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import emailjs from "@emailjs/browser";
 import {
   Menu, X, ChevronDown, Scissors, Target, Sparkles, Zap, PenTool,
   RefreshCw, Package, MapPin, Phone, Mail, Clock, Instagram, Facebook,
   MessageCircle, Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
   Lock, ImageIcon,
 } from "lucide-react";
+
+const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 import heroImgAsset from "@/assets/hero.jpg";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
@@ -199,7 +204,6 @@ const navLinks = [
   { label: "Categories", href: "categories" },
   { label: "How It Works", href: "how" },
   { label: "Lookbook", href: "lookbook" },
-  { label: "Estimator", href: "estimator" },
   { label: "Contact", href: "contact" },
 ];
 
@@ -493,9 +497,6 @@ const categories = [
   { name: "Men's Wear", subtitle: "Shirts, Suits, Kurtas, Sherwanis & more", img: catMen, key: "Men's" },
   { name: "Women's Wear", subtitle: "Salwar suits, Kurtis, Blouses, Dresses & more", img: catWomen, key: "Women's" },
   { name: "Kids' Wear", subtitle: "Frocks, Shirts, Ethnic sets & more", img: catKids, key: "Kids" },
-  { name: "Bridal Wear", subtitle: "Lehengas, Bridal sarees, Gowns & more", img: catBridal, key: "Bridal", shimmer: true },
-  { name: "Ethnic Wear", subtitle: "Sarees, Kurta sets, Anarkalis & more", img: catEthnic, key: "Ethnic" },
-  { name: "Party Wear", subtitle: "Indo-western, Cocktail dresses, Gowns & more", img: catParty, key: "Party" },
 ];
 
 function TiltCategoryCard({ c, i, onOpen }: { c: typeof categories[number]; i: number; onOpen: (cat: string, x: number, y: number, img: string) => void }) {
@@ -522,7 +523,7 @@ function TiltCategoryCard({ c, i, onOpen }: { c: typeof categories[number]; i: n
             transition: "transform 0.25s cubic-bezier(0.22,1,0.36,1)",
             transformStyle: "preserve-3d",
           }}
-          className={`ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-xl shadow-black/20 will-change-transform hover:shadow-2xl hover:shadow-burgundy/30 ${c.shimmer ? "shimmer-overlay" : ""}`}
+          className="ripple-container group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl text-left shadow-xl shadow-black/20 will-change-transform hover:shadow-2xl hover:shadow-burgundy/30"
         >
           <img src={c.img} alt={c.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-colors group-hover:from-burgundy/85 group-hover:via-burgundy/30" />
@@ -555,7 +556,7 @@ function Categories({ onOrderPortal }: { onOrderPortal: (cat: string, x: number,
         <Reveal>
           <SectionHeading eyebrow="Collections" title="Shop by Category" subtitle="Click any card — step into its atelier." />
         </Reveal>
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 md:[&>*:last-child]:col-span-2 md:[&>*:last-child]:mx-auto md:[&>*:last-child]:max-w-[calc(50%-0.75rem)] lg:grid-cols-3 lg:[&>*:last-child]:col-span-1 lg:[&>*:last-child]:max-w-none lg:[&>*:last-child]:mx-0">
           {categories.map((c, i) => (
             <TiltCategoryCard key={c.name} c={c} i={i} onOpen={onOrderPortal} />
           ))}
@@ -721,7 +722,7 @@ const features = [
   { icon: Zap, title: "Quick Turnaround", desc: "Most orders ready within 7–10 business days." },
   { icon: PenTool, title: "Design Consultation", desc: "Our experts help you pick the perfect design." },
   { icon: RefreshCw, title: "Alterations Included", desc: "Free alterations if the fit isn't perfect." },
-  { icon: Package, title: "Pan-India Delivery", desc: "Fast, secure shipping to your doorstep." },
+  { icon: MapPin, title: "Operating in Bengaluru", desc: "Based in the heart of Bengaluru, serving customers across the city with doorstep pickup and delivery." },
 ];
 
 function WhyUs() {
@@ -810,82 +811,6 @@ function Lookbook({ onOrder }: { onOrder: (cat?: string) => void }) {
   );
 }
 
-/* ============ Price Estimator ============ */
-
-const fabricTiers = [
-  { name: "Standard", mult: 1 }, { name: "Premium", mult: 1.6 }, { name: "Luxury", mult: 2.4 },
-];
-const catBase: Record<string, number> = {
-  "Men's": 3000, "Women's": 3500, "Kids": 1800, "Bridal": 18000, "Ethnic": 4500, "Party": 5500,
-};
-const urgencyMult: Record<string, number> = { "Standard (10 days)": 1, "Express (5 days)": 1.25, "Urgent (3 days)": 1.55 };
-
-function Estimator() {
-  const [cat, setCat] = useState("Women's");
-  const [tier, setTier] = useState(fabricTiers[1].name);
-  const [emb, setEmb] = useState(40);
-  const [urg, setUrg] = useState("Standard (10 days)");
-  const base = catBase[cat] * (fabricTiers.find((f) => f.name === tier)?.mult ?? 1) * urgencyMult[urg];
-  const embAdd = base * (emb / 100) * 0.6;
-  const low = Math.round(base + embAdd);
-  const high = Math.round(low * 1.25);
-  return (
-    <section id="estimator" className="bg-ivory px-6 py-24 lg:py-32">
-      <div className="mx-auto max-w-5xl">
-        <Reveal><SectionHeading eyebrow="Plan Your Outfit" title="Live Price Estimator" subtitle="An instant ballpark before you place your order." /></Reveal>
-        <Reveal>
-          <div className="mt-12 grid grid-cols-1 gap-8 rounded-3xl border border-border bg-card p-8 shadow-lg lg:grid-cols-[1.2fr_1fr]">
-            <div className="space-y-5">
-              <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</div>
-                <select value={cat} onChange={(e) => setCat(e.target.value)} className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm">
-                  {Object.keys(catBase).map((k) => <option key={k}>{k}</option>)}
-                </select>
-              </div>
-              <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fabric Tier</div>
-                <div className="grid grid-cols-3 gap-2">
-                  {fabricTiers.map((f) => (
-                    <button key={f.name} onClick={() => setTier(f.name)}
-                      className={`rounded-md border px-3 py-2 text-sm font-medium transition-all ${tier === f.name ? "border-burgundy bg-burgundy text-ivory" : "border-border bg-ivory text-charcoal hover:border-gold"}`}>
-                      {f.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div className="mb-2 flex justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <span>Embroidery: {emb < 30 ? "Minimal" : emb < 70 ? "Moderate" : "Heavy"}</span>
-                  <span>{emb}%</span>
-                </div>
-                <input type="range" min={0} max={100} value={emb} onChange={(e) => setEmb(Number(e.target.value))} className="w-full accent-burgundy" />
-              </div>
-              <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Urgency</div>
-                <div className="grid grid-cols-3 gap-2">
-                  {Object.keys(urgencyMult).map((u) => (
-                    <button key={u} onClick={() => setUrg(u)}
-                      className={`rounded-md border px-2 py-2 text-xs font-medium transition-all ${urg === u ? "border-burgundy bg-burgundy text-ivory" : "border-border bg-ivory text-charcoal hover:border-gold"}`}>
-                      {u}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center rounded-2xl bg-burgundy p-8 text-ivory">
-              <div className="text-xs uppercase tracking-[0.3em] text-gold">Estimated Price</div>
-              <motion.div key={`${low}-${high}`} initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                className="mt-3 font-display text-4xl font-bold sm:text-5xl">
-                ₹{low.toLocaleString()} <span className="text-gold">–</span> ₹{high.toLocaleString()}
-              </motion.div>
-              <p className="mt-3 text-sm text-ivory/70">Final pricing depends on chosen fabric, customisation, and tailoring detail.</p>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
 
 /* ============ Testimonials ============ */
 
@@ -1248,28 +1173,49 @@ function OrderTracker() {
 
 function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose: () => void; defaultCategory?: string }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [wish, setWish] = useState(false);
   const [wishBeat, setWishBeat] = useState(false);
-  const [fabric, setFabric] = useState("Silk");
-  const [measurements, setMeasurements] = useState("");
-  const [sizeOpen, setSizeOpen] = useState(false);
 
   useEffect(() => {
-    if (open) { document.body.style.overflow = "hidden"; setSubmitted(false); }
+    if (open) { document.body.style.overflow = "hidden"; setSubmitted(false); setSubmitting(false); }
     else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   if (!open) return null;
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const params = {
+      to_email_1: "nireeksha.22ad028@sode-edu.in",
+      to_email_2: "cscharan.s@gmail.com",
+      customer_name: String(fd.get("name") || ""),
+      customer_phone: String(fd.get("phone") || ""),
+      customer_email: String(fd.get("email") || ""),
+      category: String(fd.get("category") || ""),
+      outfit_type: String(fd.get("outfit") || ""),
+      occasion: String(fd.get("occasion") || ""),
+      design_notes: String(fd.get("design") || ""),
+      additional_notes: String(fd.get("additional") || ""),
+      submitted_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+    };
+    setSubmitting(true);
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, { publicKey: EMAILJS_PUBLIC_KEY });
+    } catch (err) {
+      console.error("EmailJS send failed:", err);
+    }
+    setSubmitting(false);
     setSubmitted(true);
     confetti({
       particleCount: 60, spread: 80, origin: { y: 0.5 },
       colors: ["#C9A84C", "#6B1E3D", "#FDF6EC"],
     });
   };
+
+  const selectCls = "w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold";
 
   return (
     <div className="fixed inset-0 z-[100]">
@@ -1300,58 +1246,35 @@ function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose
               <motion.path d="M14 25 L22 33 L35 18" stroke="#16a34a" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"
                 initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.6, delay: 0.2 }} />
             </motion.svg>
-            <h4 className="mt-5 font-display text-3xl font-bold text-burgundy">Order Received!</h4>
+            <h4 className="mt-5 font-display text-3xl font-bold text-burgundy">Thank you!</h4>
             <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-              Track your outfit's journey live below. We'll also reach out within 24 hours.
+              Your order has been received. Track your outfit's journey live below. We'll reach out within 24 hours.
             </p>
             <OrderTracker />
             <button onClick={onClose} className="mt-8 rounded-full bg-burgundy px-8 py-3 text-sm font-semibold text-ivory hover:bg-burgundy-deep">Done</button>
           </div>
         ) : (
           <form onSubmit={onSubmit} className="px-6 py-6 sm:px-8">
-            <MeasurementVault onLoad={(m) => setMeasurements(m)} />
-
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FloatField label="Full Name" name="name" required />
               <FloatField label="Phone Number" name="phone" type="tel" required />
               <div className="sm:col-span-2"><FloatField label="Email Address" name="email" type="email" required /></div>
 
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category *</label>
-                <select name="category" required defaultValue={defaultCategory ?? ""}
-                  className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm">
+                <select name="category" required defaultValue={defaultCategory ?? ""} className={selectCls}>
                   <option value="" disabled>Select a category</option>
-                  {["Men's", "Women's", "Kids", "Bridal", "Ethnic", "Party"].map((c) => <option key={c}>{c}</option>)}
+                  {["Men's", "Women's", "Kids"].map((c) => <option key={c}>{c}</option>)}
                 </select>
               </div>
-              <FloatField label="Outfit Type" name="outfit" required />
-              <FloatField label="Occasion" name="occasion" />
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Budget *</label>
-                <select name="budget" required defaultValue="" className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm">
-                  <option value="" disabled>Select budget</option>
-                  <option>Under ₹2,000</option><option>₹2,000 – ₹5,000</option><option>₹5,000 – ₹10,000</option><option>₹10,000+</option>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outfit Type *</label>
+                <select name="outfit" required defaultValue="" className={selectCls}>
+                  <option value="" disabled>Select outfit type</option>
+                  {["Party", "Ethnic", "Bridal", "Casual", "Formal"].map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
-
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fabric Preference</label>
-                <FabricSwatches value={fabric} onChange={setFabric} />
-                <input type="hidden" name="fabric" value={fabric} />
-              </div>
-
-              <div className="sm:col-span-2">
-                <div className="mb-2 flex items-center justify-between">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Measurements *</label>
-                  <button type="button" onClick={() => setSizeOpen(true)}
-                    className="flex items-center gap-1 text-xs font-semibold text-burgundy hover:text-gold">
-                    <Ruler className="h-3.5 w-3.5" /> Find My Size
-                  </button>
-                </div>
-                <textarea name="measurements" required value={measurements} onChange={(e) => setMeasurements(e.target.value)}
-                  rows={4} placeholder="Chest, Waist, Hip, Height, etc."
-                  className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm" />
-              </div>
+              <FloatField label="Occasion" name="occasion" />
 
               <div className="sm:col-span-2"><FloatField label="Color / Design Notes" name="design" textarea /></div>
 
@@ -1360,19 +1283,18 @@ function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose
                 <input type="file" name="reference" accept="image/*"
                   className="block w-full text-sm text-charcoal file:mr-3 file:rounded-full file:border-0 file:bg-burgundy file:px-4 file:py-2 file:text-xs file:font-semibold file:text-ivory" />
               </div>
-              <FloatField label="Preferred Delivery Date" name="date" type="date" />
             </div>
 
-            <button onClick={addRipple as any} type="submit"
-              className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep">
-              Submit My Order
+            <button onClick={addRipple as any} type="submit" disabled={submitting}
+              className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep disabled:opacity-70">
+              {submitting ? "Submitting…" : "Submit My Order"}
             </button>
             <p className="mt-3 text-center text-xs text-muted-foreground">By submitting, you agree to be contacted about your order.</p>
           </form>
         )}
       </div>
-      <SizeGuide open={sizeOpen} onClose={() => setSizeOpen(false)} onApply={(t) => setMeasurements((m) => (m ? m + "\n" : "") + t)} />
     </div>
+
   );
 }
 
@@ -1420,7 +1342,7 @@ function Home() {
         <HowItWorks />
         <WhyUs />
         <Lookbook onOrder={openOrder} />
-        <Estimator />
+        
         <Testimonials />
         <Contact />
       </main>
