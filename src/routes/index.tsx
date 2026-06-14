@@ -497,9 +497,6 @@ const categories = [
   { name: "Men's Wear", subtitle: "Shirts, Suits, Kurtas, Sherwanis & more", img: catMen, key: "Men's" },
   { name: "Women's Wear", subtitle: "Salwar suits, Kurtis, Blouses, Dresses & more", img: catWomen, key: "Women's" },
   { name: "Kids' Wear", subtitle: "Frocks, Shirts, Ethnic sets & more", img: catKids, key: "Kids" },
-  { name: "Bridal Wear", subtitle: "Lehengas, Bridal sarees, Gowns & more", img: catBridal, key: "Bridal", shimmer: true },
-  { name: "Ethnic Wear", subtitle: "Sarees, Kurta sets, Anarkalis & more", img: catEthnic, key: "Ethnic" },
-  { name: "Party Wear", subtitle: "Indo-western, Cocktail dresses, Gowns & more", img: catParty, key: "Party" },
 ];
 
 function TiltCategoryCard({ c, i, onOpen }: { c: typeof categories[number]; i: number; onOpen: (cat: string, x: number, y: number, img: string) => void }) {
