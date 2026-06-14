@@ -1173,28 +1173,49 @@ function OrderTracker() {
 
 function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose: () => void; defaultCategory?: string }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [wish, setWish] = useState(false);
   const [wishBeat, setWishBeat] = useState(false);
-  const [fabric, setFabric] = useState("Silk");
-  const [measurements, setMeasurements] = useState("");
-  const [sizeOpen, setSizeOpen] = useState(false);
 
   useEffect(() => {
-    if (open) { document.body.style.overflow = "hidden"; setSubmitted(false); }
+    if (open) { document.body.style.overflow = "hidden"; setSubmitted(false); setSubmitting(false); }
     else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   if (!open) return null;
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const params = {
+      to_email_1: "nireeksha.22ad028@sode-edu.in",
+      to_email_2: "cscharan.s@gmail.com",
+      customer_name: String(fd.get("name") || ""),
+      customer_phone: String(fd.get("phone") || ""),
+      customer_email: String(fd.get("email") || ""),
+      category: String(fd.get("category") || ""),
+      outfit_type: String(fd.get("outfit") || ""),
+      occasion: String(fd.get("occasion") || ""),
+      design_notes: String(fd.get("design") || ""),
+      additional_notes: String(fd.get("additional") || ""),
+      submitted_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+    };
+    setSubmitting(true);
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, { publicKey: EMAILJS_PUBLIC_KEY });
+    } catch (err) {
+      console.error("EmailJS send failed:", err);
+    }
+    setSubmitting(false);
     setSubmitted(true);
     confetti({
       particleCount: 60, spread: 80, origin: { y: 0.5 },
       colors: ["#C9A84C", "#6B1E3D", "#FDF6EC"],
     });
   };
+
+  const selectCls = "w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold";
 
   return (
     <div className="fixed inset-0 z-[100]">
@@ -1225,58 +1246,35 @@ function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose
               <motion.path d="M14 25 L22 33 L35 18" stroke="#16a34a" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"
                 initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.6, delay: 0.2 }} />
             </motion.svg>
-            <h4 className="mt-5 font-display text-3xl font-bold text-burgundy">Order Received!</h4>
+            <h4 className="mt-5 font-display text-3xl font-bold text-burgundy">Thank you!</h4>
             <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-              Track your outfit's journey live below. We'll also reach out within 24 hours.
+              Your order has been received. Track your outfit's journey live below. We'll reach out within 24 hours.
             </p>
             <OrderTracker />
             <button onClick={onClose} className="mt-8 rounded-full bg-burgundy px-8 py-3 text-sm font-semibold text-ivory hover:bg-burgundy-deep">Done</button>
           </div>
         ) : (
           <form onSubmit={onSubmit} className="px-6 py-6 sm:px-8">
-            <MeasurementVault onLoad={(m) => setMeasurements(m)} />
-
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FloatField label="Full Name" name="name" required />
               <FloatField label="Phone Number" name="phone" type="tel" required />
               <div className="sm:col-span-2"><FloatField label="Email Address" name="email" type="email" required /></div>
 
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category *</label>
-                <select name="category" required defaultValue={defaultCategory ?? ""}
-                  className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm">
+                <select name="category" required defaultValue={defaultCategory ?? ""} className={selectCls}>
                   <option value="" disabled>Select a category</option>
-                  {["Men's", "Women's", "Kids", "Bridal", "Ethnic", "Party"].map((c) => <option key={c}>{c}</option>)}
+                  {["Men's", "Women's", "Kids"].map((c) => <option key={c}>{c}</option>)}
                 </select>
               </div>
-              <FloatField label="Outfit Type" name="outfit" required />
-              <FloatField label="Occasion" name="occasion" />
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Budget *</label>
-                <select name="budget" required defaultValue="" className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm">
-                  <option value="" disabled>Select budget</option>
-                  <option>Under ₹2,000</option><option>₹2,000 – ₹5,000</option><option>₹5,000 – ₹10,000</option><option>₹10,000+</option>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outfit Type *</label>
+                <select name="outfit" required defaultValue="" className={selectCls}>
+                  <option value="" disabled>Select outfit type</option>
+                  {["Party", "Ethnic", "Bridal", "Casual", "Formal"].map((o) => <option key={o}>{o}</option>)}
                 </select>
               </div>
-
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fabric Preference</label>
-                <FabricSwatches value={fabric} onChange={setFabric} />
-                <input type="hidden" name="fabric" value={fabric} />
-              </div>
-
-              <div className="sm:col-span-2">
-                <div className="mb-2 flex items-center justify-between">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Measurements *</label>
-                  <button type="button" onClick={() => setSizeOpen(true)}
-                    className="flex items-center gap-1 text-xs font-semibold text-burgundy hover:text-gold">
-                    <Ruler className="h-3.5 w-3.5" /> Find My Size
-                  </button>
-                </div>
-                <textarea name="measurements" required value={measurements} onChange={(e) => setMeasurements(e.target.value)}
-                  rows={4} placeholder="Chest, Waist, Hip, Height, etc."
-                  className="w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm" />
-              </div>
+              <FloatField label="Occasion" name="occasion" />
 
               <div className="sm:col-span-2"><FloatField label="Color / Design Notes" name="design" textarea /></div>
 
@@ -1285,19 +1283,18 @@ function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose
                 <input type="file" name="reference" accept="image/*"
                   className="block w-full text-sm text-charcoal file:mr-3 file:rounded-full file:border-0 file:bg-burgundy file:px-4 file:py-2 file:text-xs file:font-semibold file:text-ivory" />
               </div>
-              <FloatField label="Preferred Delivery Date" name="date" type="date" />
             </div>
 
-            <button onClick={addRipple as any} type="submit"
-              className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep">
-              Submit My Order
+            <button onClick={addRipple as any} type="submit" disabled={submitting}
+              className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep disabled:opacity-70">
+              {submitting ? "Submitting…" : "Submit My Order"}
             </button>
             <p className="mt-3 text-center text-xs text-muted-foreground">By submitting, you agree to be contacted about your order.</p>
           </form>
         )}
       </div>
-      <SizeGuide open={sizeOpen} onClose={() => setSizeOpen(false)} onApply={(t) => setMeasurements((m) => (m ? m + "\n" : "") + t)} />
     </div>
+
   );
 }
 
