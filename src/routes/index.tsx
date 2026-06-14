@@ -204,7 +204,6 @@ const navLinks = [
   { label: "Categories", href: "categories" },
   { label: "How It Works", href: "how" },
   { label: "Lookbook", href: "lookbook" },
-  { label: "Estimator", href: "estimator" },
   { label: "Contact", href: "contact" },
 ];
 
