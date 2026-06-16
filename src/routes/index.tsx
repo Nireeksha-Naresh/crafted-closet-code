@@ -312,6 +312,7 @@ function Hero() {
 
   useEffect(() => {
     if (heroImages.length <= 1) return;
+
     const advance = () => {
       setPrev(current);
       setFading(true);
@@ -330,11 +331,6 @@ function Hero() {
       if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
     };
   }, [current]);
-
-  useEffect(() => {
-    if (heroImages.length === 0) return;
-    setCurrent((c) => c % heroImages.length);
-  }, []);
 
   if (heroImages.length === 0) {
     return <section id="top" className="relative h-screen min-h-[100svh] w-full overflow-hidden bg-[#1a0510]" />;
@@ -355,6 +351,8 @@ function Hero() {
 
   return (
     <section id="top" className="relative h-screen min-h-[100svh] w-full overflow-hidden bg-[#1a0510]">
+      <style>{`@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }`}</style>
+
       <div className="absolute inset-0 overflow-hidden">
         {prev !== null && heroImages[prev] && (
           <img
@@ -384,10 +382,13 @@ function Hero() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 1,
+            opacity: 0,
             animation: "kenburns 5s ease-out forwards",
             transition: "opacity 0.9s ease",
             zIndex: 2,
+          }}
+          onLoad={(e) => {
+            e.currentTarget.style.opacity = "1";
           }}
         />
       </div>
