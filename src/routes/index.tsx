@@ -296,217 +296,128 @@ function Navbar({ onOrder, festivalActive }: { onOrder: () => void; festivalActi
 
 /* ============ Hero ============ */
 
-function Particles() {
-  const items = useMemo(() =>
-    Array.from({ length: 12 }).map((_, i) => ({
-      left: Math.random() * 100, size: 8 + Math.random() * 14,
-      duration: 12 + Math.random() * 8, delay: Math.random() * 8,
-      dx: (Math.random() - 0.5) * 120, hue: Math.random() > 0.5 ? "#C9A84C" : "#FDF6EC", key: i,
-    })), []);
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {items.map((p) => (
-        <svg key={p.key} className="particle" style={{
-          left: `${p.left}%`, bottom: "-40px", width: p.size, height: p.size,
-          animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s`,
-          ["--dx" as any]: `${p.dx}px`, color: p.hue, opacity: 0.5,
-        }} viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-function Typewriter({ text, className }: { text: string; className?: string }) {
-  const [n, setN] = useState(0);
-  const [blink, setBlink] = useState(true);
-  useEffect(() => {
-    if (n < text.length) {
-      const t = setTimeout(() => setN(n + 1), 40); return () => clearTimeout(t);
-    }
-    const t = setTimeout(() => setBlink(false), 1500); return () => clearTimeout(t);
-  }, [n, text]);
-  return (
-    <span className={className}>
-      {text.slice(0, n)}
-      {blink && <span className="ml-0.5 inline-block animate-pulse">|</span>}
-    </span>
-  );
-}
-
-const bridalBanners = [
-  {
-    img: bannerShowroom,
-    eyebrow: "House of Vastras",
-    headline: "Crafting Memories, Stitching Happiness",
-    sub: "A bespoke atelier of bridal couture, sherwanis & heirloom embroidery — made for your moment.",
-    alt: "House of Vastras atelier showroom with bridal lehenga and sherwani",
-  },
-  {
-    img: bannerZardozi,
-    eyebrow: "The Wedding Edit",
-    headline: "Threads of Royalty",
-    sub: "Hand-stitched zardozi, dabka & nakshi — couture made for your moment.",
-    alt: "Floating zardozi flowers on maroon silk",
-  },
-  {
-    img: bannerTunnel,
-    eyebrow: "Heritage Atelier",
-    headline: "Heritage in Every Stitch",
-    sub: "An embroidered runway of paisley, pearls & gold thread architecture.",
-    alt: "Royal embroidered tunnel with pearl tassels",
-  },
-  {
-    img: bannerJewel,
-    eyebrow: "Maharani Collection",
-    headline: "Crafted for Celebrations",
-    sub: "Open the jewel box — Mughal motifs reimagined for the modern bride.",
-    alt: "Open velvet jewelry chest with gold embroidery",
-  },
-  {
-    img: bannerCourtyard,
-    eyebrow: "Moonlit Couture",
-    headline: "A Courtyard of Drapes",
-    sub: "Lantern-lit silks and chandeliers of floral thread work.",
-    alt: "Moonlit royal courtyard with embroidered chandeliers",
-  },
-  {
-    img: bannerGalaxy,
-    eyebrow: "Avant-Garde Bridal",
-    headline: "An Embroidered Galaxy",
-    sub: "Where zardozi constellations meet velvet cosmos. Couture, redefined.",
-    alt: "Embroidered galaxy of gold thread and stars",
-  },
-];
-
-function Pearls() {
-  const items = useMemo(() =>
-    Array.from({ length: 14 }).map((_, i) => ({
-      left: Math.random() * 100,
-      size: 3 + Math.random() * 5,
-      duration: 14 + Math.random() * 12,
-      delay: Math.random() * 10,
-      key: i,
-    })), []);
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {items.map((p) => (
-        <span key={p.key} className="pearl-float" style={{
-          left: `${p.left}%`, bottom: "-10px", width: p.size, height: p.size,
-          animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s`,
-        }} />
-      ))}
-    </div>
-  );
-}
-
 function Hero() {
-  const [idx, setIdx] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [animKey, setAnimKey] = useState(0);
+  const [fading, setFading] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
   useEffect(() => {
-    const sh = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", sh, { passive: true });
-    return () => window.removeEventListener("scroll", sh);
+    heroImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
+
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % bridalBanners.length), 7000);
-    return () => clearInterval(t);
+    if (heroImages.length <= 1) return;
+    const advance = () => {
+      setPrev(current);
+      setFading(true);
+      setCurrent((c) => (c + 1) % heroImages.length);
+      setAnimKey((k) => k + 1);
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => {
+        setPrev(null);
+        setFading(false);
+      }, 950);
+    };
+
+    const t = window.setInterval(advance, 4500);
+    return () => {
+      window.clearInterval(t);
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    };
+  }, [current]);
+
+  useEffect(() => {
+    if (heroImages.length === 0) return;
+    setCurrent((c) => c % heroImages.length);
   }, []);
-  const b = bridalBanners[idx];
+
+  if (heroImages.length === 0) {
+    return <section id="top" className="relative h-screen min-h-[100svh] w-full overflow-hidden bg-[#1a0510]" />;
+  }
+
+  const handleDotClick = (index: number) => {
+    if (index === current) return;
+    setPrev(current);
+    setFading(true);
+    setCurrent(index);
+    setAnimKey((k) => k + 1);
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      setPrev(null);
+      setFading(false);
+    }, 950);
+  };
+
   return (
-    <section id="top" className="relative isolate min-h-screen overflow-hidden bg-black">
-      {/* Banner carousel */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
-        >
+    <section id="top" className="relative h-screen min-h-[100svh] w-full overflow-hidden bg-[#1a0510]">
+      <div className="absolute inset-0 overflow-hidden">
+        {prev !== null && heroImages[prev] && (
           <img
-            src={b.img}
-            alt={b.alt}
-            className="banner-kenburns absolute inset-0 h-full w-full object-cover"
+            src={heroImages[prev]}
+            alt="House of Vastras hero slide"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: fading ? 0 : 1,
+              transition: "opacity 0.9s ease",
+              transform: "scale(1.09)",
+              zIndex: 1,
+            }}
           />
-        </motion.div>
-      </AnimatePresence>
+        )}
 
-      {/* Vignette + warm glow */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/80" />
-      <div className="pointer-events-none absolute inset-0 spotlight-sweep" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,transparent_0%,rgba(0,0,0,0.55)_100%)]" />
-
-      <Pearls />
-
-      {/* Ornamental gold corners */}
-      <svg aria-hidden className="pointer-events-none absolute left-6 top-24 h-16 w-16 text-gold/70" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1">
-        <path d="M2 30 Q2 2 30 2" /><path d="M10 30 Q10 10 30 10" /><circle cx="30" cy="30" r="2" fill="currentColor" />
-      </svg>
-      <svg aria-hidden className="pointer-events-none absolute right-6 top-24 h-16 w-16 -scale-x-100 text-gold/70" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1">
-        <path d="M2 30 Q2 2 30 2" /><path d="M10 30 Q10 10 30 10" /><circle cx="30" cy="30" r="2" fill="currentColor" />
-      </svg>
-
-      {/* Copy */}
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-24 text-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transform: `translateY(${scrollY * -0.35}px)` }}
-          >
-            <span className="font-royal mb-8 inline-block text-[11px] uppercase text-gold/90">
-              <span className="thread-stitch">{b.eyebrow}</span>
-            </span>
-            <h1 className="font-couture mt-4 text-6xl italic leading-[1.02] text-ivory sm:text-7xl md:text-[7.5rem]">
-              <span className="gold-foil">{b.headline}</span>
-            </h1>
-            <p className="font-couture mx-auto mt-8 max-w-xl text-lg leading-relaxed text-ivory/85 sm:text-xl">
-              {b.sub}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="mt-12 flex flex-col gap-4 sm:flex-row">
-          <a href="#categories" onClick={(e) => { e.preventDefault(); document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" }); }}
-             onMouseDown={addRipple as any}
-             className="ripple-container btn-morph font-royal bg-gold/95 px-10 py-4 text-[11px] uppercase text-burgundy-deep shadow-xl shadow-black/40">
-            Explore the Edit
-          </a>
-          <a href="#how" onClick={(e) => { e.preventDefault(); document.getElementById("how")?.scrollIntoView({ behavior: "smooth" }); }}
-             onMouseDown={addRipple as any}
-             className="ripple-container btn-morph font-royal border border-gold/70 bg-transparent px-10 py-4 text-[11px] uppercase text-gold hover:bg-gold/10">
-            Book a Consultation
-          </a>
-        </div>
-
-        {/* Banner indicators */}
-        <div className="absolute bottom-24 left-1/2 flex -translate-x-1/2 gap-3">
-          {bridalBanners.map((_, i) => (
-            <button
-              key={i}
-              aria-label={`Show banner ${i + 1}`}
-              onClick={() => setIdx(i)}
-              className="group relative h-[2px] w-10 overflow-hidden bg-ivory/25"
-            >
-              <span
-                className="absolute inset-y-0 left-0 bg-gold transition-all duration-700"
-                style={{ width: i === idx ? "100%" : "0%" }}
-              />
-            </button>
-          ))}
-        </div>
-
-        <button aria-label="Scroll down" onClick={() => document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" })}
-                className="animate-bounce-down absolute bottom-8 left-1/2 -translate-x-1/2 text-gold">
-          <ChevronDown className="h-8 w-8" />
-        </button>
+        <img
+          key={animKey}
+          src={heroImages[current]}
+          alt="House of Vastras hero slide"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 1,
+            animation: "kenburns 5s ease-out forwards",
+            transition: "opacity 0.9s ease",
+            zIndex: 2,
+          }}
+        />
       </div>
+
+      {heroImages.length > 1 && (
+        <div
+          className="absolute left-1/2 z-20 flex -translate-x-1/2 items-center gap-2"
+          style={{ bottom: 28 }}
+        >
+          {heroImages.map((_, index) => {
+            const active = index === current;
+            return (
+              <button
+                key={index}
+                type="button"
+                aria-label={`Go to hero slide ${index + 1}`}
+                onClick={() => handleDotClick(index)}
+                style={{
+                  width: active ? 22 : 7,
+                  height: 7,
+                  borderRadius: active ? 4 : "50%",
+                  background: active ? "#C9A84C" : "rgba(201,168,76,0.35)",
+                  transition: "all 0.4s cubic-bezier(0.34,1.56,0.64,1)",
+                  cursor: "pointer",
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
