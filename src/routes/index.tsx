@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import emailjs from "@emailjs/browser";
 import {
-  Menu, X, ChevronDown, Scissors, Target, Sparkles, Zap, PenTool,
+  Menu, X, Scissors, Target, Sparkles, Zap, PenTool,
   RefreshCw, Package, MapPin, Phone, Mail, Clock, Instagram, Facebook,
   MessageCircle, Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
   Lock, ImageIcon,
@@ -13,7 +13,6 @@ import {
 const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
 const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
 const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-import heroImgAsset from "@/assets/hero.jpg";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
 import catKidsAsset from "@/assets/cat-kids.png.asset.json";
@@ -24,15 +23,26 @@ import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
-import bannerZardozi from "@/assets/banner-zardozi-garden.jpg";
-import bannerTunnel from "@/assets/banner-embroidery-tunnel.jpg";
-import bannerJewel from "@/assets/banner-jewel-box.jpg";
-import bannerCourtyard from "@/assets/banner-moonlit-courtyard.jpg";
-import bannerGalaxy from "@/assets/banner-embroidery-galaxy.jpg";
-import bannerShowroomAsset from "@/assets/hero-vastras-showroom.png.asset.json";
-const bannerShowroom = bannerShowroomAsset.url;
 
-const heroImg = heroImgAsset;
+const heroImageModules = {
+  ...import.meta.glob("@/assets/hero*.{jpg,jpeg,png,webp}", { eager: true }),
+  ...import.meta.glob("@/assets/hov.{jpg,jpeg,png,webp}", { eager: true }),
+} as Record<string, { default?: string }>;
+
+function getHeroImageOrder(path: string) {
+  const file = path.split("/").pop()?.toLowerCase() ?? "";
+  if (/^hero\.(jpg|jpeg|png|webp)$/.test(file)) return 0;
+  if (/^hov\.(jpg|jpeg|png|webp)$/.test(file)) return 1;
+  const numberedHero = file.match(/^hero(\d+)\.(jpg|jpeg|png|webp)$/);
+  if (numberedHero) return Number(numberedHero[1]) + 1;
+  return 999;
+}
+
+const heroImages: string[] = Object.entries(heroImageModules)
+  .sort(([a], [b]) => getHeroImageOrder(a) - getHeroImageOrder(b) || a.localeCompare(b))
+  .map(([, mod]) => mod.default)
+  .filter((src): src is string => Boolean(src));
+
 const catMen = catMenAsset.url;
 const catWomen = catWomenAsset.url;
 const catKids = catKidsAsset.url;
@@ -43,6 +53,7 @@ const bgArch = bgArchAsset.url;
 const bgRack = bgRackAsset.url;
 const bgMughal = bgMughalAsset.url;
 const bgDrape = bgDrapeAsset.url;
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
