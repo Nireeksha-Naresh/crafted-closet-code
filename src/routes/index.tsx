@@ -24,23 +24,22 @@ import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
 
-const heroImageModules = {
-  ...import.meta.glob("@/assets/hero*.{jpg,jpeg,png,webp}", { eager: true }),
-  ...import.meta.glob("@/assets/hov.{jpg,jpeg,png,webp}", { eager: true }),
-} as Record<string, { default?: string }>;
+const heroImageModules = import.meta.glob(
+  "@/assets/hero*.{jpg,jpeg,png,webp}.asset.json",
+  { eager: true }
+) as Record<string, { default?: { url?: string } }>;
 
 function getHeroImageOrder(path: string) {
   const file = path.split("/").pop()?.toLowerCase() ?? "";
-  if (/^hero\.(jpg|jpeg|png|webp)$/.test(file)) return 0;
-  if (/^hov\.(jpg|jpeg|png|webp)$/.test(file)) return 1;
-  const numberedHero = file.match(/^hero(\d+)\.(jpg|jpeg|png|webp)$/);
-  if (numberedHero) return Number(numberedHero[1]) + 1;
+  if (/^hero\.(jpg|jpeg|png|webp)\.asset\.json$/.test(file)) return 0;
+  const numberedHero = file.match(/^hero(\d+)\.(jpg|jpeg|png|webp)\.asset\.json$/);
+  if (numberedHero) return Number(numberedHero[1]);
   return 999;
 }
 
 const heroImages: string[] = Object.entries(heroImageModules)
   .sort(([a], [b]) => getHeroImageOrder(a) - getHeroImageOrder(b) || a.localeCompare(b))
-  .map(([, mod]) => mod.default)
+  .map(([, mod]) => mod.default?.url)
   .filter((src): src is string => Boolean(src));
 
 const catMen = catMenAsset.url;
