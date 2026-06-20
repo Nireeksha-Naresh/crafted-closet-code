@@ -826,7 +826,7 @@ function Contact() {
               {[
                 { icon: MapPin, label: "Address", value: "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094", href: "https://share.google/QuyXYQFObTKYEMV0q" },
                 { icon: Phone, label: "Phone", value: "+91 73532 70412", href: "tel:+917353270412" },
-                { icon: Mail, label: "Email", value: "orders@stitchandstyle.in", href: "mailto:orders@stitchandstyle.in" },
+                { icon: Mail, label: "Email", value: " houseofvastras0@gmail.com", href: "mailto:houseofvastras0@gmail.com" },
                 { icon: Clock, label: "Working Hours", value: "Mon – Sat, 10 AM – 7 PM" },
               ].map((c) => (
                 <li key={c.label} className="flex gap-4">
