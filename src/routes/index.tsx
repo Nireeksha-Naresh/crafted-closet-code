@@ -843,15 +843,14 @@ function Contact() {
                 </li>
               ))}
             </ul>
-            <a href="https://share.google/QuyXYQFObTKYEMV0q" target="_blank" rel="noreferrer"
-               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold">
-              <MapPin className="h-4 w-4" /> View on Google Maps →
-            </a>
-          
-              </a>
-                ))}
-              </div>
-            </div>
+           <a
+  href="https://share.google/QuyXYQFObTKYEMV0q"
+  target="_blank"
+  rel="noreferrer"
+  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
+>
+  <MapPin className="h-4 w-4" /> View on Google Maps →
+</a>
           </Reveal>
           <Reveal>
             <form onSubmit={(e) => { e.preventDefault(); setSent(true); (e.target as HTMLFormElement).reset(); setTimeout(() => setSent(false), 4000); }}
