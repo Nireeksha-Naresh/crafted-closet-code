@@ -847,13 +847,8 @@ function Contact() {
                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold">
               <MapPin className="h-4 w-4" /> View on Google Maps →
             </a>
-            <div className="mt-10">
-              <div className="text-xs uppercase tracking-wider text-muted-foreground">Follow Us</div>
-              <div className="mt-3 flex gap-3">
-                {[Instagram, Facebook, MessageCircle].map((Icon, i) => (
-                  <a key={i} href="#" aria-label="social" className="grid h-11 w-11 place-items-center rounded-full border border-gold text-gold transition-colors hover:bg-gold hover:text-charcoal">
-                    <Icon className="h-5 w-5" />
-                  </a>
+          
+              </a>
                 ))}
               </div>
             </div>
