@@ -811,7 +811,6 @@ function Testimonials() {
 }
 
 /* ============ Contact ============ */
-
 function Contact() {
   return (
     <section id="contact" className="bg-ivory px-6 py-24 lg:py-32">
@@ -826,8 +825,8 @@ function Contact() {
 
         <div className="mt-16 flex justify-center">
           <Reveal>
-            <div className="max-w-2xl">
-              <ul className="space-y-6">
+            <div className="max-w-3xl text-center">
+              <ul className="space-y-8">
                 {[
                   {
                     icon: MapPin,
@@ -856,39 +855,37 @@ function Contact() {
                 ].map((c) => (
                   <li
                     key={c.label}
-                    className="flex items-start justify-center gap-4 text-center"
+                    className="flex flex-col items-center"
                   >
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-burgundy text-gold">
+                    <span className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-burgundy text-gold">
                       <c.icon className="h-5 w-5" />
                     </span>
 
-                    <div>
-                      <div className="text-xs uppercase tracking-wider text-muted-foreground">
-                        {c.label}
-                      </div>
-
-                      {c.href ? (
-                        <a
-                          href={c.href}
-                          target={
-                            c.href.startsWith("http") ? "_blank" : undefined
-                          }
-                          rel="noreferrer"
-                          className="mt-1 block text-base font-medium text-charcoal hover:text-burgundy"
-                        >
-                          {c.value}
-                        </a>
-                      ) : (
-                        <div className="mt-1 text-base font-medium text-charcoal">
-                          {c.value}
-                        </div>
-                      )}
+                    <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                      {c.label}
                     </div>
+
+                    {c.href ? (
+                      <a
+                        href={c.href}
+                        target={
+                          c.href.startsWith("http") ? "_blank" : undefined
+                        }
+                        rel="noreferrer"
+                        className="mt-1 text-base font-medium text-charcoal hover:text-burgundy"
+                      >
+                        {c.value}
+                      </a>
+                    ) : (
+                      <div className="mt-1 text-base font-medium text-charcoal">
+                        {c.value}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-8 text-center">
+              <div className="mt-10">
                 <a
                   href="https://share.google/QuyXYQFObTKYEMV0q"
                   target="_blank"
