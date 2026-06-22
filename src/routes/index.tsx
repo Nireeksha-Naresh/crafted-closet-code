@@ -16,19 +16,22 @@ const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
 import catKidsAsset from "@/assets/cat-kids.png.asset.json";
-import catBridalAsset from "@/assets/cat-bridal.png.asset.json";F
+import catBridalAsset from "@/assets/cat-bridal.png.asset.json";
 import catEthnicAsset from "@/assets/cat-ethnic.png.asset.json";
 import catPartyAsset from "@/assets/cat-party.png.asset.json";
 import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
+import hero1 from "../../hero1.jpeg";
+import hero2 from "../../hero2.jpeg";
+import hero3 from "../../hero3.jpeg";
 
-const heroImageModules = import.meta.glob(
-  "@/assets/hero*.{jpg,jpeg,png,webp}.asset.json",
-  { eager: true }
-) as Record<string, { default?: { url?: string } }>;
-
+const heroImages = [
+  hero1,
+  hero2,
+  hero3,
+];
 function getHeroImageOrder(path: string) {
   const file = path.split("/").pop()?.toLowerCase() ?? "";
   if (/^hero\.(jpg|jpeg|png|webp)\.asset\.json$/.test(file)) return 0;
