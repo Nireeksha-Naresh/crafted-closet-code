@@ -191,7 +191,7 @@ function Logo({ small }: { small?: boolean }) {
         <Scissors className={`animate-spin-once ${small ? "h-4 w-4" : "h-5 w-5"}`} />
       </span>
       <span className={`font-display font-bold tracking-tight text-burgundy ${small ? "text-lg" : "text-xl"}`}>
-        Stitch <span className="text-gold">&</span> Style
+        House <span className="text-gold">Of</span> Vastras
       </span>
     </a>
   );
@@ -905,7 +905,7 @@ function Footer() {
               <Scissors className="h-5 w-5" />
             </span>
             <span className="font-display text-xl font-bold">
-              Stitch <span className="text-gold">&</span> Style
+              House <span className="text-gold">Of</span> Vastras
             </span>
           </div>
           <p className="mt-3 max-w-xs text-sm text-ivory/60">
