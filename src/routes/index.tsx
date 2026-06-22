@@ -105,16 +105,6 @@ function addRipple(e: React.MouseEvent<HTMLElement>) {
 
 /* ============ Festival banner ============ */
 
-function useFestival() {
-  return useMemo(() => {
-    const m = new Date().getMonth();
-    if (m === 9 || m === 10) return { name: "Diwali", cta: "Light up the festivities — order your Diwali outfit!", color: "#C9A84C" };
-    if (m === 11) return { name: "Christmas", cta: "Make this Christmas merry & tailored!", color: "#6B1E3D" };
-    if (m === 3 || m === 4) return { name: "Eid", cta: "Eid Mubarak — order your festive look today!", color: "#C9A84C" };
-    return null;
-  }, []);
-}
-
 /* ============ Loyalty banner ============ */
 
 function LoyaltyBanner() {
