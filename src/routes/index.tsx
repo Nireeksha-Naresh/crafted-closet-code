@@ -816,47 +816,89 @@ function Contact() {
   return (
     <section id="contact" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        <Reveal><SectionHeading eyebrow="Say Hello" title="Get in Touch" subtitle="Visit our store or contact us for tailoring services." /></Reveal>
-        <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Say Hello"
+            title="Get in Touch"
+            subtitle="Visit our store or contact us for tailoring services."
+          />
+        </Reveal>
+
+        <div className="mt-16 flex justify-center">
           <Reveal>
-            <ul className="space-y-6">
-              {[
-                { icon: MapPin, label: "Address", value: "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094", href: "https://share.google/QuyXYQFObTKYEMV0q" },
-                { icon: Phone, label: "Phone", value: "+91 73532 70412", href: "tel:+917353270412" },
-                { icon: Mail, label: "Email", value: "houseofvastras0@gmail.com", href: "mailto:houseofvastras0@gmail.com" },
-                { icon: Clock, label: "Working Hours", value: "Mon – Sat, 10 AM – 7 PM" },
-              ].map((c) => (
-                <li key={c.label} className="flex gap-4">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-burgundy text-gold"><c.icon className="h-5 w-5" /></span>
-                  <div>
-                    <div className="text-xs uppercase tracking-wider text-muted-foreground">{c.label}</div>
-                    {c.href ? (
-                      <a href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"
-                         className="mt-1 block text-base font-medium text-charcoal hover:text-burgundy">{c.value}</a>
-                    ) : (
-                      <div className="mt-1 text-base font-medium text-charcoal">{c.value}</div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <a
-              href="https://share.google/QuyXYQFObTKYEMV0q"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
-            >
-              <MapPin className="h-4 w-4" /> View on Google Maps →
-            </a>
-          </Reveal>
-          <Reveal>
-            <div className="h-80 w-full overflow-hidden rounded-2xl shadow-lg">
-              <iframe
-                title="Store Location"
-                src="https://maps.google.com/maps?q=41+Hazras+4th+Main+Rd+RMV+2nd+Stage+Sanjayanagara+Bengaluru+Karnataka+560094&output=embed"
-                className="h-full w-full border-0"
-                loading="lazy"
-              />
+            <div className="max-w-2xl">
+              <ul className="space-y-6">
+                {[
+                  {
+                    icon: MapPin,
+                    label: "Address",
+                    value:
+                      "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094",
+                    href: "https://share.google/QuyXYQFObTKYEMV0q",
+                  },
+                  {
+                    icon: Phone,
+                    label: "Phone",
+                    value: "+91 73532 70412",
+                    href: "tel:+917353270412",
+                  },
+                  {
+                    icon: Mail,
+                    label: "Email",
+                    value: "houseofvastras0@gmail.com",
+                    href: "mailto:houseofvastras0@gmail.com",
+                  },
+                  {
+                    icon: Clock,
+                    label: "Working Hours",
+                    value: "Mon – Sat, 10 AM – 7 PM",
+                  },
+                ].map((c) => (
+                  <li
+                    key={c.label}
+                    className="flex items-start justify-center gap-4 text-center"
+                  >
+                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-burgundy text-gold">
+                      <c.icon className="h-5 w-5" />
+                    </span>
+
+                    <div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                        {c.label}
+                      </div>
+
+                      {c.href ? (
+                        <a
+                          href={c.href}
+                          target={
+                            c.href.startsWith("http") ? "_blank" : undefined
+                          }
+                          rel="noreferrer"
+                          className="mt-1 block text-base font-medium text-charcoal hover:text-burgundy"
+                        >
+                          {c.value}
+                        </a>
+                      ) : (
+                        <div className="mt-1 text-base font-medium text-charcoal">
+                          {c.value}
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 text-center">
+                <a
+                  href="https://share.google/QuyXYQFObTKYEMV0q"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
+                >
+                  <MapPin className="h-4 w-4" />
+                  View on Google Maps →
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>
