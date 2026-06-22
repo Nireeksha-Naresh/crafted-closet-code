@@ -1376,7 +1376,7 @@ Please confirm my order. Thank you!
 function WhatsAppButton() {
   const [pulse, setPulse] = useState(false);
   useEffect(() => { const t = setTimeout(() => setPulse(true), 3000); return () => clearTimeout(t); }, []);
-  const text = encodeURIComponent("Hi Stitch & Style! I'd like to place a custom order. Category: ___, Occasion: ___, Budget: ___");
+  const text = encodeURIComponent("Hi Houseof vastras!);
   return (
     <a href={`https://wa.me/7353270412?text=${text}`} target="_blank" rel="noopener noreferrer"
       aria-label="WhatsApp Quick Order"
