@@ -812,6 +812,33 @@ function Testimonials() {
 
 /* ============ Contact ============ */
 function Contact() {
+  const contacts = [
+    {
+      icon: MapPin,
+      label: "Address",
+      value:
+        "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094",
+      href: "https://share.google/QuyXYQFObTKYEMV0q",
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      value: "+91 73532 70412",
+      href: "tel:+917353270412",
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: "houseofvastras0@gmail.com",
+      href: "mailto:houseofvastras0@gmail.com",
+    },
+    {
+      icon: Clock,
+      label: "Working Hours",
+      value: "Mon – Sat • 10 AM – 7 PM",
+    },
+  ];
+
   return (
     <section id="contact" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
@@ -823,87 +850,59 @@ function Contact() {
           />
         </Reveal>
 
-        <div className="mt-16 flex justify-center">
-          <Reveal>
-            <div className="max-w-3xl text-center">
-              <ul className="space-y-8">
-                {[
-                  {
-                    icon: MapPin,
-                    label: "Address",
-                    value:
-                      "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094",
-                    href: "https://share.google/QuyXYQFObTKYEMV0q",
-                  },
-                  {
-                    icon: Phone,
-                    label: "Phone",
-                    value: "+91 73532 70412",
-                    href: "tel:+917353270412",
-                  },
-                  {
-                    icon: Mail,
-                    label: "Email",
-                    value: "houseofvastras0@gmail.com",
-                    href: "mailto:houseofvastras0@gmail.com",
-                  },
-                  {
-                    icon: Clock,
-                    label: "Working Hours",
-                    value: "Mon – Sat, 10 AM – 7 PM",
-                  },
-                ].map((c) => (
-                  <li
-                    key={c.label}
-                    className="flex flex-col items-center"
-                  >
-                    <span className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-burgundy text-gold">
-                      <c.icon className="h-5 w-5" />
-                    </span>
-
-                    <div className="text-xs uppercase tracking-wider text-muted-foreground">
-                      {c.label}
-                    </div>
-
-                    {c.href ? (
-                      <a
-                        href={c.href}
-                        target={
-                          c.href.startsWith("http") ? "_blank" : undefined
-                        }
-                        rel="noreferrer"
-                        className="mt-1 text-base font-medium text-charcoal hover:text-burgundy"
-                      >
-                        {c.value}
-                      </a>
-                    ) : (
-                      <div className="mt-1 text-base font-medium text-charcoal">
-                        {c.value}
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-10">
-                <a
-                  href="https://share.google/QuyXYQFObTKYEMV0q"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
+        <Reveal>
+          <div className="mx-auto mt-16 max-w-3xl rounded-3xl border border-gold/10 bg-white/40 p-10 shadow-xl backdrop-blur-sm lg:p-14">
+            <ul className="space-y-12">
+              {contacts.map((c) => (
+                <li
+                  key={c.label}
+                  className="flex flex-col items-center text-center"
                 >
-                  <MapPin className="h-4 w-4" />
-                  View on Google Maps →
-                </a>
-              </div>
+                  <span className="mb-5 grid h-16 w-16 place-items-center rounded-full bg-burgundy text-gold shadow-md">
+                    <c.icon className="h-7 w-7" />
+                  </span>
+
+                  <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                    {c.label}
+                  </p>
+
+                  {c.href ? (
+                    <a
+                      href={c.href}
+                      target={
+                        c.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel="noreferrer"
+                      className="mt-3 max-w-xl text-lg font-medium leading-relaxed text-charcoal transition-colors hover:text-burgundy"
+                    >
+                      {c.value}
+                    </a>
+                  ) : (
+                    <p className="mt-3 text-lg font-medium text-charcoal">
+                      {c.value}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-14 border-t border-gold/10 pt-8 text-center">
+              <a
+                href="https://share.google/QuyXYQFObTKYEMV0q"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-burgundy px-6 py-3 text-sm font-semibold text-gold transition-all hover:scale-105 hover:bg-charcoal"
+              >
+                <MapPin className="h-4 w-4" />
+                View on Google Maps
+              </a>
             </div>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
-
 /* ============ Footer ============ */
 
 function Footer() {
