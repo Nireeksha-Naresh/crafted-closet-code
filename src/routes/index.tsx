@@ -5,8 +5,8 @@ import confetti from "canvas-confetti";
 import emailjs from "@emailjs/browser";
 import {
   Menu, X, Scissors, Target, Sparkles, Zap, PenTool,
-  RefreshCw, Package, MapPin, Phone, Mail, Clock, Instagram, Facebook,
-  MessageCircle, Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
+  RefreshCw, Package, MapPin, Phone, Mail, Clock,
+  Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
   Lock, ImageIcon,
 } from "lucide-react";
 
