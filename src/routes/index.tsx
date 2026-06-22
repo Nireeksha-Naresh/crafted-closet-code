@@ -881,24 +881,31 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3 md:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-burgundy text-gold"><Scissors className="h-5 w-5" /></span>
-            <span className="font-display text-xl font-bold">Stitch <span className="text-gold">&</span> Style</span>
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-burgundy text-gold">
+              <Scissors className="h-5 w-5" />
+            </span>
+            <span className="font-display text-xl font-bold">
+              Stitch <span className="text-gold">&</span> Style
+            </span>
           </div>
-          <p className="mt-3 max-w-xs text-sm text-ivory/60">Crafted for You. Made to Last.</p>
+          <p className="mt-3 max-w-xs text-sm text-ivory/60">
+            Crafted for You. Made to Last.
+          </p>
         </div>
+
         <nav className="flex flex-wrap justify-center gap-6 text-sm">
           {navLinks.map((l) => (
-            <a key={l.href} href={`#${l.href}`} className="text-ivory/80 hover:text-gold">{l.label}</a>
-          ))}
-        </nav>
-        <div className="flex justify-start gap-3 md:justify-end">
-          {[Instagram, Facebook, MessageCircle].map((Icon, i) => (
-            <a key={i} href="#" aria-label="social" className="grid h-10 w-10 place-items-center rounded-full border border-gold/50 text-gold hover:bg-gold hover:text-charcoal">
-              <Icon className="h-4 w-4" />
+            <a
+              key={l.href}
+              href={`#${l.href}`}
+              className="text-ivory/80 hover:text-gold"
+            >
+              {l.label}
             </a>
           ))}
-        </div>
+        </nav>
       </div>
+
       <div className="mx-auto mt-10 max-w-7xl border-t border-ivory/10 pt-6 text-center text-xs text-ivory/50">
         © 2025 Stitch & Style. All rights reserved. | Made with ♥ in India
       </div>
