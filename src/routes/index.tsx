@@ -16,7 +16,7 @@ const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
 import catKidsAsset from "@/assets/cat-kids.png.asset.json";
-import catBridalAsset from "@/assets/cat-bridal.png.asset.json";
+import catBridalAsset from "@/assets/cat-bridal.png.asset.json";F
 import catEthnicAsset from "@/assets/cat-ethnic.png.asset.json";
 import catPartyAsset from "@/assets/cat-party.png.asset.json";
 import bgArchAsset from "@/assets/bg-arch.png.asset.json";
@@ -851,21 +851,6 @@ function Contact() {
 >
   <MapPin className="h-4 w-4" /> View on Google Maps →
 </a>
-          </Reveal>
-          <Reveal>
-            <form onSubmit={(e) => { e.preventDefault(); setSent(true); (e.target as HTMLFormElement).reset(); setTimeout(() => setSent(false), 4000); }}
-                  className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-              <div className="space-y-5">
-                <FloatField label="Name" name="name" required />
-                <FloatField label="Email" name="email" type="email" required />
-                <FloatField label="Message" name="message" textarea required />
-              </div>
-              <button onClick={addRipple as any} type="submit"
-                className="ripple-container btn-morph mt-6 w-full bg-burgundy px-6 py-3.5 text-sm font-semibold text-ivory hover:bg-burgundy-deep">
-                Send Message
-              </button>
-              {sent && <p className="mt-4 rounded-md bg-gold/15 px-3 py-2 text-sm text-burgundy">Thanks — we'll get back to you shortly.</p>}
-            </form>
           </Reveal>
         </div>
       </div>
