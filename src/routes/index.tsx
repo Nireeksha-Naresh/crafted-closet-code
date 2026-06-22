@@ -1200,7 +1200,7 @@ ${imageInfo}
 Please confirm my order. Thank you!
     `;
 
-    const whatsappNumber = "+91 7353270412"; 
+    const whatsappNumber = "917353270412"; 
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
@@ -1366,7 +1366,7 @@ Please confirm my order. Thank you!
 function WhatsAppButton() {
   const [pulse, setPulse] = useState(false);
   useEffect(() => { const t = setTimeout(() => setPulse(true), 3000); return () => clearTimeout(t); }, []);
-  const text = encodeURIComponent("Hi Houseof vastras!);
+  const text = encodeURIComponent("Hi House of Vastras! I would like to know more about your custom outfits.");
   return (
     <a href={`https://wa.me/7353270412?text=${text}`} target="_blank" rel="noopener noreferrer"
       aria-label="WhatsApp Quick Order"
