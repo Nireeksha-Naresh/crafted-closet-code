@@ -23,27 +23,27 @@ import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
-import hero1 from "../../hero1.jpeg";
-import hero2 from "../../hero2.jpeg";
-import hero3 from "../../hero3.jpeg";
+import heroAsset from "@/assets/hero.png.asset.json";
+import hero2Asset from "@/assets/hero2.png.asset.json";
+import hero3Asset from "@/assets/hero3.png.asset.json";
+import hero4Asset from "@/assets/hero4.png.asset.json";
+import hero5Asset from "@/assets/hero5.png.asset.json";
+import hero6Asset from "@/assets/hero6.png.asset.json";
+import hero7Asset from "@/assets/hero7.webp.asset.json";
+import hero8Asset from "@/assets/hero8.webp.asset.json";
+import hero9Asset from "@/assets/hero9.webp.asset.json";
 
-const heroImages = [
-  hero1,
-  hero2,
-  hero3,
-];
-function getHeroImageOrder(path: string) {
-  const file = path.split("/").pop()?.toLowerCase() ?? "";
-  if (/^hero\.(jpg|jpeg|png|webp)\.asset\.json$/.test(file)) return 0;
-  const numberedHero = file.match(/^hero(\d+)\.(jpg|jpeg|png|webp)\.asset\.json$/);
-  if (numberedHero) return Number(numberedHero[1]);
-  return 999;
-}
-
-const heroImages: string[] = Object.entries(heroImageModules)
-  .sort(([a], [b]) => getHeroImageOrder(a) - getHeroImageOrder(b) || a.localeCompare(b))
-  .map(([, mod]) => mod.default?.url)
-  .filter((src): src is string => Boolean(src));
+const heroImages: string[] = [
+  heroAsset.url,
+  hero2Asset.url,
+  hero3Asset.url,
+  hero4Asset.url,
+  hero5Asset.url,
+  hero6Asset.url,
+  hero7Asset.url,
+  hero8Asset.url,
+  hero9Asset.url,
+].filter(Boolean);
 
 const catMen = catMenAsset.url;
 const catWomen = catWomenAsset.url;
