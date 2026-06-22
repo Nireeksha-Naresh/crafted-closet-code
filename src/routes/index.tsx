@@ -819,7 +819,7 @@ function Contact() {
   return (
     <section id="contact" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        <Reveal><SectionHeading eyebrow="Say Hello" title="Get in Touch" subtitle="We'd love to hear from you." /></Reveal>
+        <Reveal><SectionHeading eyebrow="Say Hello" title="Get in Touch" subtitle="Visit our store or contact us for tailoring services." /></Reveal>
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
           <Reveal>
             <ul className="space-y-6">
