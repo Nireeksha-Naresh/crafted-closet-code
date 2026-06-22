@@ -1,18 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
-import emailjs from "@emailjs/browser";
 import {
   Menu, X, Scissors, Target, Sparkles, Zap, PenTool,
   RefreshCw, Package, MapPin, Phone, Mail, Clock,
   Star, ArrowRight, Ruler, Heart, CheckCircle2, Gift,
-  Lock, ImageIcon,
+  Lock, ImageIcon, MessageCircle,
 } from "lucide-react";
 
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 import catMenAsset from "@/assets/cat-men.png.asset.json";
 import catWomenAsset from "@/assets/cat-women.png.asset.json";
 import catKidsAsset from "@/assets/cat-kids.png.asset.json";
@@ -818,7 +813,6 @@ function Testimonials() {
 /* ============ Contact ============ */
 
 function Contact() {
-  const [sent, setSent] = useState(false);
   return (
     <section id="contact" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
@@ -829,7 +823,7 @@ function Contact() {
               {[
                 { icon: MapPin, label: "Address", value: "41, Hazras, 4th Main Rd, RMV 2nd Stage, Naidu Layout, Sanjayanagara, Bengaluru, Karnataka 560094", href: "https://share.google/QuyXYQFObTKYEMV0q" },
                 { icon: Phone, label: "Phone", value: "+91 73532 70412", href: "tel:+917353270412" },
-                { icon: Mail, label: "Email", value: " houseofvastras0@gmail.com", href: "mailto:houseofvastras0@gmail.com" },
+                { icon: Mail, label: "Email", value: "houseofvastras0@gmail.com", href: "mailto:houseofvastras0@gmail.com" },
                 { icon: Clock, label: "Working Hours", value: "Mon – Sat, 10 AM – 7 PM" },
               ].map((c) => (
                 <li key={c.label} className="flex gap-4">
@@ -846,14 +840,24 @@ function Contact() {
                 </li>
               ))}
             </ul>
-           <a
-  href="https://share.google/QuyXYQFObTKYEMV0q"
-  target="_blank"
-  rel="noreferrer"
-  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
->
-  <MapPin className="h-4 w-4" /> View on Google Maps →
-</a>
+            <a
+              href="https://share.google/QuyXYQFObTKYEMV0q"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-burgundy hover:text-gold"
+            >
+              <MapPin className="h-4 w-4" /> View on Google Maps →
+            </a>
+          </Reveal>
+          <Reveal>
+            <div className="h-80 w-full overflow-hidden rounded-2xl shadow-lg">
+              <iframe
+                title="Store Location"
+                src="https://maps.google.com/maps?q=41+Hazras+4th+Main+Rd+RMV+2nd+Stage+Sanjayanagara+Bengaluru+Karnataka+560094&output=embed"
+                className="h-full w-full border-0"
+                loading="lazy"
+              />
+            </div>
           </Reveal>
         </div>
       </div>
