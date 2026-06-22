@@ -1239,7 +1239,7 @@ function WhatsAppButton() {
   useEffect(() => { const t = setTimeout(() => setPulse(true), 3000); return () => clearTimeout(t); }, []);
   const text = encodeURIComponent("Hi Stitch & Style! I'd like to place a custom order. Category: ___, Occasion: ___, Budget: ___");
   return (
-    <a href={`https://wa.me/919876543210?text=${text}`} target="_blank" rel="noopener noreferrer"
+    <a href={`https://wa.me/7353270412?text=${text}`} target="_blank" rel="noopener noreferrer"
       aria-label="WhatsApp Quick Order"
       className={`fixed bottom-6 right-6 z-50 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-xl ${pulse ? "wa-pulse" : ""}`}>
       <MessageCircle className="h-7 w-7" />
