@@ -55,9 +55,9 @@ const bgDrape = bgDrapeAsset.url;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Stitch & Style — Crafted for You. Made to Last." },
+      { title: "House of Vastras — Crafted for You. Made to Last." },
       { name: "description", content: "Premium made-to-order clothing crafted to your exact measurements. Men's, women's, bridal & ethnic wear delivered across India." },
-      { property: "og:title", content: "Stitch & Style — Premium Made-to-Order Clothing" },
+      { property: "og:title", content: "House of Vastras — Premium Made-to-Order Clothing" },
       { property: "og:description", content: "Custom-tailored outfits for every occasion. Crafted for you. Made to last." },
     ],
   }),
@@ -658,7 +658,7 @@ function WhyUs() {
   return (
     <section id="why" className="bg-ivory px-6 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        <Reveal><SectionHeading eyebrow="Our Promise" title="Why Choose Stitch & Style?" subtitle="Where quality meets craftsmanship." /></Reveal>
+        <Reveal><SectionHeading eyebrow="Our Promise" title="Why Choose House of Vastras?" subtitle="Where quality meets craftsmanship." /></Reveal>
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 60}>
@@ -937,7 +937,7 @@ function Footer() {
       </div>
 
       <div className="mx-auto mt-10 max-w-7xl border-t border-ivory/10 pt-6 text-center text-xs text-ivory/50">
-        © 2025 Stitch & Style. All rights reserved. | Made with ♥ in India
+        © 2025 House of Vastras. All rights reserved. | Made with ♥ in India
       </div>
     </footer>
   );
