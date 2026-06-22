@@ -1097,130 +1097,232 @@ function OrderTracker() {
   );
 }
 
-function OrderModal({ open, onClose, defaultCategory }: { open: boolean; onClose: () => void; defaultCategory?: string }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+function OrderModal({
+  open,
+  onClose,
+  defaultCategory,
+}: {
+  open: boolean;
+  onClose: () => void;
+  defaultCategory?: string;
+}) {
   const [wish, setWish] = useState(false);
   const [wishBeat, setWishBeat] = useState(false);
 
   useEffect(() => {
-    if (open) { document.body.style.overflow = "hidden"; setSubmitted(false); setSubmitting(false); }
-    else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   if (!open) return null;
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const fd = new FormData(e.currentTarget);
-    const params = {
-      to_email_1: "nireeksha.22ad028@sode-edu.in",
-      to_email_2: "cscharan.s@gmail.com",
-      customer_name: String(fd.get("name") || ""),
-      customer_phone: String(fd.get("phone") || ""),
-      customer_email: String(fd.get("email") || ""),
-      category: String(fd.get("category") || ""),
-      outfit_type: String(fd.get("outfit") || ""),
-      occasion: String(fd.get("occasion") || ""),
-      design_notes: String(fd.get("design") || ""),
-      additional_notes: String(fd.get("additional") || ""),
-      submitted_at: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-    };
-    setSubmitting(true);
-    try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, { publicKey: EMAILJS_PUBLIC_KEY });
-    } catch (err) {
-      console.error("EmailJS send failed:", err);
-    }
-    setSubmitting(false);
-    setSubmitted(true);
-    confetti({
-      particleCount: 60, spread: 80, origin: { y: 0.5 },
-      colors: ["#C9A84C", "#6B1E3D", "#FDF6EC"],
-    });
+
+    const name = String(fd.get("name") || "");
+    const phone = String(fd.get("phone") || "");
+    const email = String(fd.get("email") || "");
+    const category = String(fd.get("category") || "");
+    const outfit = String(fd.get("outfit") || "");
+    const occasion = String(fd.get("occasion") || "");
+    const design = String(fd.get("design") || "");
+    const additional = String(fd.get("additional") || "");
+
+    const file = fd.get("reference") as File | null;
+
+    const imageInfo =
+      file && file.name
+        ? `📎 Selected Image: ${file.name}\n⚠️ Please attach it manually in WhatsApp`
+        : `📎 No image selected`;
+
+    const message = `
+🧵 *NEW CUSTOM ORDER*
+
+👤 Name: ${name}
+📞 Phone: ${phone}
+📧 Email: ${email}
+
+👗 Category: ${category}
+👚 Outfit Type: ${outfit}
+🎯 Occasion: ${occasion}
+
+🎨 Design Notes:
+${design}
+
+📝 Additional Notes:
+${additional}
+
+${imageInfo}
+
+Please confirm my order. Thank you!
+    `;
+
+    const whatsappNumber = "+91 7353270412"; 
+
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(url, "_blank");
   };
 
-  const selectCls = "w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold";
+  const selectCls =
+    "w-full rounded-md border border-input bg-ivory px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold";
 
   return (
     <div className="fixed inset-0 z-[100]">
-      <div className="animate-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="animate-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
       <div className="animate-drape fixed left-1/2 top-1/2 max-h-[92vh] w-[95vw] max-w-3xl overflow-y-auto rounded-3xl bg-ivory shadow-2xl">
+        {/* HEADER */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-ivory/95 px-6 py-4 backdrop-blur">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-gold">New Order</div>
-            <h3 className="font-display text-2xl font-bold text-charcoal">Place Your Custom Order</h3>
+            <div className="text-xs font-semibold uppercase tracking-wider text-gold">
+              New Order
+            </div>
+            <h3 className="font-display text-2xl font-bold text-charcoal">
+              Place Your Custom Order
+            </h3>
           </div>
+
           <div className="flex items-center gap-2">
-            <button onClick={() => { setWish((w) => !w); setWishBeat(true); setTimeout(() => setWishBeat(false), 500); }}
+            <button
+              onClick={() => {
+                setWish((w) => !w);
+                setWishBeat(true);
+                setTimeout(() => setWishBeat(false), 500);
+              }}
               aria-label="Wishlist"
-              className={`grid h-9 w-9 place-items-center rounded-full hover:bg-ivory-soft ${wishBeat ? "animate-heartbeat" : ""}`}>
-              <Heart className={`h-5 w-5 ${wish ? "fill-burgundy text-burgundy" : "text-charcoal"}`} />
+              className={`grid h-9 w-9 place-items-center rounded-full hover:bg-ivory-soft ${
+                wishBeat ? "animate-heartbeat" : ""
+              }`}
+            >
+              <Heart
+                className={`h-5 w-5 ${
+                  wish ? "fill-burgundy text-burgundy" : "text-charcoal"
+                }`}
+              />
             </button>
-            <button onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full hover:bg-ivory-soft">
+
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="grid h-9 w-9 place-items-center rounded-full hover:bg-ivory-soft"
+            >
               <X className="h-5 w-5" />
             </button>
           </div>
         </div>
 
-        {submitted ? (
-          <div className="px-8 py-12 text-center">
-            <motion.svg viewBox="0 0 48 48" className="mx-auto h-20 w-20">
-              <motion.circle cx="24" cy="24" r="22" fill="#16a34a22" stroke="#16a34a" strokeWidth="2"
-                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200 }} />
-              <motion.path d="M14 25 L22 33 L35 18" stroke="#16a34a" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.6, delay: 0.2 }} />
-            </motion.svg>
-            <h4 className="mt-5 font-display text-3xl font-bold text-burgundy">Thank you!</h4>
-            <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-              Your order has been received. Track your outfit's journey live below. We'll reach out within 24 hours.
-            </p>
-            <OrderTracker />
-            <button onClick={onClose} className="mt-8 rounded-full bg-burgundy px-8 py-3 text-sm font-semibold text-ivory hover:bg-burgundy-deep">Done</button>
-          </div>
-        ) : (
-          <form onSubmit={onSubmit} className="px-6 py-6 sm:px-8">
-            <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FloatField label="Full Name" name="name" required />
-              <FloatField label="Phone Number" name="phone" type="tel" required />
-              <div className="sm:col-span-2"><FloatField label="Email Address" name="email" type="email" required /></div>
+        {/* FORM */}
+        <form onSubmit={onSubmit} className="px-6 py-6 sm:px-8">
+          <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <FloatField label="Full Name" name="name" required />
+            <FloatField
+              label="Phone Number"
+              name="phone"
+              type="tel"
+              required
+            />
 
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category *</label>
-                <select name="category" required defaultValue={defaultCategory ?? ""} className={selectCls}>
-                  <option value="" disabled>Select a category</option>
-                  {["Men's", "Women's", "Kids"].map((c) => <option key={c}>{c}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outfit Type *</label>
-                <select name="outfit" required defaultValue="" className={selectCls}>
-                  <option value="" disabled>Select outfit type</option>
-                  {["Party", "Ethnic", "Bridal", "Casual", "Formal"].map((o) => <option key={o}>{o}</option>)}
-                </select>
-              </div>
-              <FloatField label="Occasion" name="occasion" />
-
-              <div className="sm:col-span-2"><FloatField label="Color / Design Notes" name="design" textarea /></div>
-
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Reference Image</label>
-                <input type="file" name="reference" accept="image/*"
-                  className="block w-full text-sm text-charcoal file:mr-3 file:rounded-full file:border-0 file:bg-burgundy file:px-4 file:py-2 file:text-xs file:font-semibold file:text-ivory" />
-              </div>
+            <div className="sm:col-span-2">
+              <FloatField
+                label="Email Address"
+                name="email"
+                type="email"
+                required
+              />
             </div>
 
-            <button onClick={addRipple as any} type="submit" disabled={submitting}
-              className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep disabled:opacity-70">
-              {submitting ? "Submitting…" : "Submit My Order"}
-            </button>
-            <p className="mt-3 text-center text-xs text-muted-foreground">By submitting, you agree to be contacted about your order.</p>
-          </form>
-        )}
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Category *
+              </label>
+              <select
+                name="category"
+                required
+                defaultValue={defaultCategory ?? ""}
+                className={selectCls}
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {["Men's", "Women's", "Kids"].map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Outfit Type *
+              </label>
+              <select
+                name="outfit"
+                required
+                defaultValue=""
+                className={selectCls}
+              >
+                <option value="" disabled>
+                  Select outfit type
+                </option>
+                {["Party", "Ethnic", "Bridal", "Casual", "Formal"].map(
+                  (o) => (
+                    <option key={o}>{o}</option>
+                  )
+                )}
+              </select>
+            </div>
+
+            <FloatField label="Occasion" name="occasion" />
+
+            <div className="sm:col-span-2">
+              <FloatField
+                label="Color / Design Notes"
+                name="design"
+                textarea
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Reference Image
+              </label>
+              <input
+                type="file"
+                name="reference"
+                accept="image/*"
+                className="block w-full text-sm text-charcoal file:mr-3 file:rounded-full file:border-0 file:bg-burgundy file:px-4 file:py-2 file:text-xs file:font-semibold file:text-ivory"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={addRipple as any}
+            type="submit"
+            className="ripple-container btn-morph mt-7 w-full bg-burgundy px-6 py-4 text-sm font-semibold uppercase tracking-wider text-ivory shadow-lg shadow-burgundy/30 hover:bg-burgundy-deep"
+          >
+            Submit My Order
+          </button>
+
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            By submitting, you will be redirected to WhatsApp to confirm your
+            order.
+          </p>
+        </form>
       </div>
     </div>
-
   );
 }
 
