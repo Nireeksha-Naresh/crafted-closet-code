@@ -18,27 +18,21 @@ import bgArchAsset from "@/assets/bg-arch.png.asset.json";
 import bgRackAsset from "@/assets/bg-rack.png.asset.json";
 import bgMughalAsset from "@/assets/bg-mughal.png.asset.json";
 import bgDrapeAsset from "@/assets/bg-drape.png.asset.json";
-import heroAsset from "@/assets/hero.png.asset.json";
-import hero2Asset from "@/assets/hero2.png.asset.json";
-import hero3Asset from "@/assets/hero3.png.asset.json";
-import hero4Asset from "@/assets/hero4.png.asset.json";
-import hero5Asset from "@/assets/hero5.png.asset.json";
-import hero6Asset from "@/assets/hero6.png.asset.json";
-import hero7Asset from "@/assets/hero7.webp.asset.json";
-import hero8Asset from "@/assets/hero8.webp.asset.json";
-import hero9Asset from "@/assets/hero9.webp.asset.json";
+//import heroAsset from "@/assets/hero.png.asset.json";
+//import hero2Asset from "@/assets/hero2.png.asset.json";
+//import hero3Asset from "@/assets/hero3.png.asset.json";
+//import hero4Asset from "@/assets/hero4.png.asset.json";
+//import hero5Asset from "@/assets/hero5.png.asset.json";
+//import hero6Asset from "@/assets/hero6.png.asset.json";
+//import hero7Asset from "@/assets/hero7.webp.asset.json";
+//import hero8Asset from "@/assets/hero8.webp.asset.json";
+//import hero9Asset from "@/assets/hero9.webp.asset.json";
 
 const heroImages: string[] = [
-  heroAsset.url,
-  hero2Asset.url,
-  hero3Asset.url,
-  hero4Asset.url,
-  hero5Asset.url,
-  hero6Asset.url,
-  hero7Asset.url,
-  hero8Asset.url,
-  hero9Asset.url,
-].filter(Boolean);
+  "/hov1.png",
+  "/hov2.png",
+  "/hov3.png",
+];
 
 const catMen = catMenAsset.url;
 const catWomen = catWomenAsset.url;
