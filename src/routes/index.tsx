@@ -186,12 +186,20 @@ function Modal({ open, onClose, title, children, wide }: { open: boolean; onClos
 
 function Logo({ small }: { small?: boolean }) {
   return (
-    <a href="#top" className="flex items-center">
+    <a href="#top" className="flex items-center gap-4">
       <img
         src="/logo.jpg"
         alt="House of Vastras Logo"
         className={`${small ? "h-12" : "h-16"} w-auto rounded-md object-contain`}
       />
+
+      <span
+        className={`font-display font-bold tracking-[0.18em] text-burgundy ${
+          small ? "text-xl" : "text-2xl"
+        }`}
+      >
+        HOUSE OF VASTRAS
+      </span>
     </a>
   );
 }
