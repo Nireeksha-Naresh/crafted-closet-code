@@ -186,17 +186,15 @@ function Modal({ open, onClose, title, children, wide }: { open: boolean; onClos
 
 function Logo({ small }: { small?: boolean }) {
   return (
-    <a href="#top" className="flex items-center gap-2">
-      <span className={`grid place-items-center rounded-full bg-burgundy text-gold ${small ? "h-8 w-8" : "h-10 w-10"}`}>
-        <Scissors className={`animate-spin-once ${small ? "h-4 w-4" : "h-5 w-5"}`} />
-      </span>
-      <span className={`font-display font-bold tracking-tight text-burgundy ${small ? "text-lg" : "text-xl"}`}>
-        House <span className="text-gold">Of</span> Vastras
-      </span>
+    <a href="#top" className="flex items-center">
+      <img
+        src="/logo.jpg"
+        alt="House of Vastras Logo"
+        className={`${small ? "h-12" : "h-16"} w-auto rounded-md object-contain`}
+      />
     </a>
   );
 }
-
 /* ============ Navbar ============ */
 
 const navLinks = [
