@@ -1378,6 +1378,28 @@ function WhatsAppButton() {
 
 /* ============ Home ============ */
 
+
+function useFestival() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+
+  if (month === 10 || month === 11) {
+    return {
+      name: "Festive",
+      cta: "Celebrate with custom ethnic wear",
+    };
+  }
+
+  if (month === 12) {
+    return {
+      name: "Wedding Season",
+      cta: "Book your perfect outfit",
+    };
+  }
+
+  return null;
+}
+
 function Home() {
   const [orderOpen, setOrderOpen] = useState(false);
   const [presetCategory, setPresetCategory] = useState<string | undefined>();
