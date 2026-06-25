@@ -589,10 +589,30 @@ function Stats() {
 /* ============ How it works ============ */
 
 const steps = [
-  { n: "01", icon: Sparkles, title: "Choose Your Style", desc: "Browse categories and pick your outfit type." },
-  { n: "02", icon: PenTool, title: "Share Your Details", desc: "Fill in measurements, fabric, and design preferences." },
-  { n: "03", icon: Scissors, title: "We Craft It", desc: "Our master tailors bring your vision to life." },
-  { n: "04", icon: Package, title: "Delivered to You", desc: "Your custom outfit delivered to your doorstep." },
+  {
+    n: "01",
+    icon: Sparkles,
+    title: "Curate Your Vision",
+    desc: "Explore our signature collection to find the silhouettes, textures, and details that define your personal style.",
+  },
+  {
+    n: "02",
+    icon: PenTool,
+    title: "Secure Your Consultation",
+    desc: "Book a private session with our master designers to discuss your vision, explore premium fabrics, and refine your preferences.",
+  },
+  {
+    n: "03",
+    icon: Scissors,
+    title: "The Artisanal Process",
+    desc: "Our tailors meticulously bring your design to life, blending traditional craftsmanship with your unique measurements and requirements.",
+  },
+  {
+    n: "04",
+    icon: Package,
+    title: "Your Masterpiece Arrives",
+    desc: "Experience the perfect fit. Your custom-tailored garment is hand-delivered, ready to be worn for your special moment.",
+  },
 ];
 
 function HowItWorks() {
