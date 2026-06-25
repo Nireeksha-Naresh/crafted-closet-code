@@ -101,7 +101,7 @@ function addRipple(e: React.MouseEvent<HTMLElement>) {
 
 /* ============ Loyalty banner ============ */
 
-//function LoyaltyBanner() {
+function LoyaltyBanner() {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -120,10 +120,8 @@ function addRipple(e: React.MouseEvent<HTMLElement>) {
             className="fixed inset-x-0 top-0 z-[60] festival-strip text-ivory shadow-md"
           >
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-6 py-2 text-sm">
-              <button onClick={() => setOpen(true)} className="flex items-center gap-2 font-medium">
-                <Gift className="h-4 w-4" /> Your 3rd order earns <span className="font-bold">15% off</span> — tap for tier perks
-              </button>
-              <button onClick={dismiss} aria-label="dismiss"><X className="h-4 w-4" /></button>
+             
+            
             </div>
           </motion.div>
         )}
