@@ -101,7 +101,7 @@ function addRipple(e: React.MouseEvent<HTMLElement>) {
 
 /* ============ Loyalty banner ============ */
 
-function LoyaltyBanner() {
+//function LoyaltyBanner() {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
