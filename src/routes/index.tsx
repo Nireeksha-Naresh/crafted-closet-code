@@ -920,17 +920,21 @@ function Footer() {
     <footer className="bg-[#1E1E1E] px-6 py-14 text-ivory">
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3 md:items-center">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-burgundy text-gold">
-              <Scissors className="h-5 w-5" />
-            </span>
-            <span className="font-display text-xl font-bold">
-              House <span className="text-gold">Of</span> Vastras
-            </span>
-          </div>
-          <p className="mt-3 max-w-xs text-sm text-ivory/60">
-            Crafted for You. Made to Last.
-          </p>
+          <div className="flex items-center gap-4">
+  <img
+    src="/logo.jpg"
+    alt="House of Vastras Logo"
+    className="h-14 w-auto rounded-md object-contain"
+  />
+
+  <span className="font-display text-2xl font-bold uppercase tracking-[0.22em] text-ivory">
+    HOUSE OF VASTRAS
+  </span>
+</div>
+
+<p className="mt-4 max-w-xs text-sm text-ivory/60">
+  Crafted for You. Made to Last.
+</p>
         </div>
 
         <nav className="flex flex-wrap justify-center gap-6 text-sm">
